@@ -36,7 +36,7 @@ export function RenPanel() {
           onClick={() => {
             const next = !voiceOn;
             setVoice(next);
-            voice.enabled = next;
+            voice.setEnabled(next);
             if (next) voice.say(ui.voiceTest[lang], lang, { musicOn: soundOn });
           }}
         >

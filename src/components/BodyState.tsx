@@ -1,6 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { initialLang, useApp } from "@/store/useApp";
+import { prefetchAudio } from "@/audio/client";
 import { closeSection } from "./actions";
 
 /**
@@ -15,6 +16,7 @@ export function BodyState() {
 
   useEffect(() => {
     useApp.setState({ lang: initialLang() });
+    prefetchAudio();
   }, []);
   useEffect(() => {
     document.documentElement.lang = lang;

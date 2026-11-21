@@ -25,7 +25,7 @@ const reducedMotion = () => typeof window !== "undefined" && window.matchMedia("
 export function enter(withSound: boolean) {
   if (entered) return;
   entered = true;
-  if (withSound) void audio.start();
+  if (withSound) audio.start();
   window.dispatchEvent(new Event("intro:leave"));
   const rm = reducedMotion();
   const [tDoors, tGone, tEntered] = rm ? [0, 50, 60] : [900, 2400, 2600];

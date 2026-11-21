@@ -15,7 +15,7 @@ export function SoundToggle() {
       className={`snd${on ? " on" : ""}`}
       aria-label={t(ui.aMusic)}
       aria-pressed={on}
-      onClick={() => (on ? audio.stop() : void audio.start())}
+      onClick={() => (on ? audio.stop() : audio.start())}
     >
       <span className="bars" aria-hidden="true">
         <i />
