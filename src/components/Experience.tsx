@@ -8,7 +8,6 @@ import { useApp } from "@/store/useApp";
 import { shippori } from "@/app/fonts";
 import { closeSection, openSection } from "./actions";
 import { bridge } from "./bridge";
-import { writeHash } from "./deepLink";
 import { useT } from "./hooks";
 import { onEngineReady } from "./Intro/enter";
 import { renSay } from "./renSpeech";
@@ -76,7 +75,9 @@ export default function Experience() {
       bridge.engine = engine;
       engine.attachOverlay({ hotspots: bridge.hotspots, bubble: bridge.bubble });
       engine.setLanguage(store.getState().lang);
-      store.getState().setWebgl("ok");
+      void engine.ready.then(() => {
+        if (!cancelled) store.getState().setWebgl("ok");
+      });
       // store → engine
       let prevSection = store.getState().section;
       let prevLang = store.getState().lang;
@@ -85,7 +86,6 @@ export default function Experience() {
           if (s.section !== prevSection) {
             prevSection = s.section;
             engine?.focus(s.section);
-            if (s.entered) writeHash(s.section);
           }
           if (s.lang !== prevLang) {
             prevLang = s.lang;
@@ -103,5 +103,5 @@ export default function Experience() {
     };
   }, []);
 
-  return <canvas id="scene" ref={canvas} tabIndex={-1} aria-label={t(ui.aScene)} />;
+  return <canvas id="scene" ref={canvas} tabIndex={-1} role="img" aria-label={t(ui.aScene)} />;
 }

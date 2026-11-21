@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description: profile.description.en,
   applicationName: title,
   authors: [{ name: profile.name, url: profile.siteUrl }],
-  alternates: { canonical: "/", languages: { en: "/", ja: "/" } },
+  alternates: { canonical: "/" },
   openGraph: {
     type: "profile",
     title,

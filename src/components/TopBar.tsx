@@ -12,10 +12,11 @@ export function TopBar() {
   const section = useApp((s) => s.section);
   const menuOpen = useApp((s) => s.menuOpen);
   const setMenu = useApp((s) => s.setMenu);
+  const entered = useApp((s) => s.entered);
   const t = useT();
   const other = lang === "en" ? "ja" : "en";
   return (
-    <header id="bar">
+    <header id="bar" inert={!entered}>
       <a
         className="brand"
         href="#"

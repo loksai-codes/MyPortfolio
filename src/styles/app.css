@@ -11,3 +11,28 @@
 .portrait img{flex:none}
 /* intro: show only the active language before hydration */
 html[data-lang="ja"] .l-en,html:not([data-lang="ja"]) .l-ja{display:none}
+
+/* ---------- text-only fallback (no JS / no WebGL) ---------- */
+.fallback{display:none}
+html.no-webgl .fallback{display:block}
+html.no-webgl,html.no-webgl body{overflow:auto;height:auto;cursor:auto}
+html.no-webgl #intro,html.no-webgl #scene,html.no-webgl #bar,html.no-webgl #hero,html.no-webgl #hint,html.no-webgl .vert,
+html.no-webgl #hotspots,html.no-webgl #bubble,html.no-webgl #panel,html.no-webgl #cur,html.no-webgl #cur2,html.no-webgl .vign{display:none!important}
+html.no-webgl button,html.no-webgl a{cursor:pointer}
+.fallback{max-width:820px;margin:0 auto;padding:28px 20px 80px;color:var(--ink);background:linear-gradient(180deg,#f7f0e1,#efe4cc);min-height:100vh;box-shadow:0 0 0 100vmax #0c0e22}
+.fallback .fb-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:34px}
+.fallback .brand{color:var(--ink)}
+.fallback .lang button{color:var(--ink)}
+.fallback .lang button.on{color:var(--shu)}
+.fallback .lang i{background:rgba(20,17,23,.3)}
+.fb-h1{font-family:var(--disp);font-weight:600;font-size:clamp(44px,8vw,76px);line-height:.95}
+.fb-h1 span{display:block;font-family:var(--serif);font-size:.26em;letter-spacing:.6em;margin-top:12px;opacity:.75;font-weight:500}
+.fb-note{margin:20px 0;font-size:14px;opacity:.7;line-height:1.8}
+.fb-nav{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0 0 30px;font-size:12px;letter-spacing:.18em;text-transform:uppercase}
+.fb-nav a{text-decoration:none;border-bottom:1px solid var(--shu)}
+.fb-sec{padding:40px 0 10px;border-top:1px solid rgba(20,17,23,.12);scroll-margin-top:12px}
+.fb-sec ul.chips{list-style:none}
+.fb-sec .card h3{font-family:var(--disp);font-size:30px;font-weight:600;line-height:1;margin:0}
+.fb-sec .quest h3,.fb-sec .tl h3,.fb-sec .sk h3{margin:0}
+.fb-sec .ggrid figure{transform:none!important}
+.fb-foot{margin-top:50px;font-size:12px;opacity:.6;letter-spacing:.2em}

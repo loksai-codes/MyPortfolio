@@ -45,6 +45,8 @@ export type { EngineOptions, SectionKey } from "./types";
  */
 export class Engine {
   readonly events = new Emitter<EngineEvents>();
+  /** Resolves once all shader programs are compiled. */
+  readonly ready: Promise<unknown>;
   private renderer: THREE.WebGLRenderer;
   private scene = new THREE.Scene();
   private camera = new THREE.PerspectiveCamera(48, 1, 0.05, 200);
@@ -129,6 +131,9 @@ export class Engine {
     this.fx = buildFx(k, r.getPixelRatio());
     this.doors = buildEntryDoors(k);
     r.shadowMap.needsUpdate = true;
+    // Compile every shader program up front (in parallel where KHR_parallel_shader_compile exists) so the
+    // first view of the garden doesn't stall the main thread mid-sequence.
+    this.ready = r.compileAsync(this.scene, this.camera).catch(() => undefined);
 
     this.picker = new Picker(canvas, this.camera, k.interactive);
     this.bindInput();
