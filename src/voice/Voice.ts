@@ -2,7 +2,18 @@ import { audio } from "@/audio/client";
 
 const PREFERRED: Record<"en" | "ja", string[]> = {
   ja: ["Kyoko", "Nanami", "Haruka", "Google 日本語", "Mizuki", "Ayumi", "O-Ren"],
-  en: ["Samantha", "Aria", "Jenny", "Google US English", "Ava", "Zira", "Karen", "Tessa", "Moira", "Google UK English Female"],
+  en: [
+    "Samantha",
+    "Aria",
+    "Jenny",
+    "Google US English",
+    "Ava",
+    "Zira",
+    "Karen",
+    "Tessa",
+    "Moira",
+    "Google UK English Female",
+  ],
 };
 
 export interface SayOptions {
@@ -23,7 +34,8 @@ class Voice {
   private readonly ok: boolean;
 
   constructor() {
-    this.ok = typeof window !== "undefined" && "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined";
+    this.ok =
+      typeof window !== "undefined" && "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined";
     if (!this.ok) return;
     const load = () => {
       try {

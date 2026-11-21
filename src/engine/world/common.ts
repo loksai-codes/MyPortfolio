@@ -4,7 +4,14 @@ import { rnd } from "../core/rand";
 
 /** Flattened low-poly boulder. */
 export function rock(k: Kit, x: number, y: number, z: number, s: number, col = 0x55524d, parent?: THREE.Object3D) {
-  const m = k.mesh(new THREE.DodecahedronGeometry(s, 1), k.std({ color: col, roughness: 0.95, flatShading: true }), x, y, z, parent);
+  const m = k.mesh(
+    new THREE.DodecahedronGeometry(s, 1),
+    k.std({ color: col, roughness: 0.95, flatShading: true }),
+    x,
+    y,
+    z,
+    parent,
+  );
   m.scale.y = 0.55;
   m.rotation.y = rnd(0, 6);
   return m;

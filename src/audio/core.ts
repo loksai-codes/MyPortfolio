@@ -19,7 +19,8 @@ export const NOTE = (n: string): number => {
 
 /** Build the master chain, koto body, hall reverb and the quiet night-wind bed. */
 export function createCore(): AudioCore | null {
-  const AC = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+  const AC =
+    window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
   if (!AC) return null;
   const ctx = new AC();
   const master = ctx.createGain();

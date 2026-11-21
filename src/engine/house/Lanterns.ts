@@ -17,7 +17,14 @@ export function buildLanterns(k: Kit, lanternTex: THREE.Texture): void {
   }
   mesh(
     new THREE.LatheGeometry(pts, 40),
-    std({ map: lanternTex, emissive: 0xff7a3a, emissiveMap: lanternTex, emissiveIntensity: 0.9, roughness: 0.8, side: THREE.DoubleSide }),
+    std({
+      map: lanternTex,
+      emissive: 0xff7a3a,
+      emissiveMap: lanternTex,
+      emissiveIntensity: 0.9,
+      roughness: 0.8,
+      side: THREE.DoubleSide,
+    }),
     0,
     0,
     0,

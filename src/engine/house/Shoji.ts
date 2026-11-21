@@ -17,7 +17,11 @@ export function buildShoji(k: Kit): void {
     opacity: 0.93,
   });
   const lat = std({ color: 0x2f2015, alphaMap: T.lattice, alphaTest: 0.5, roughness: 0.6, side: THREE.DoubleSide });
-  const depth = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, alphaMap: T.lattice, alphaTest: 0.5 });
+  const depth = new THREE.MeshDepthMaterial({
+    depthPacking: THREE.RGBADepthPacking,
+    alphaMap: T.lattice,
+    alphaTest: 0.5,
+  });
   const pw = 1.52,
     ph = 1.84;
   (

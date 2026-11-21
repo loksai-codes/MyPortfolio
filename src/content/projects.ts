@@ -36,7 +36,10 @@ export const projectList: Project[] = [
       { en: "9 MCP tools", ja: "MCPツール 9種" },
     ],
     stack: ["Python", "Neo4j Relate", "Cypher", "MCP", "Claude Code", "Cloud Run", "GitHub Actions"],
-    links: [github("https://github.com/loksai-codes/blind-flange"), liveDemo("https://loksai-codes.github.io/blind-flange/")],
+    links: [
+      github("https://github.com/loksai-codes/blind-flange"),
+      liveDemo("https://loksai-codes.github.io/blind-flange/"),
+    ],
   },
   {
     name: "FreshCheck",

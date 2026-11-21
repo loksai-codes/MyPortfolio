@@ -14,22 +14,34 @@ export const quests: PanelHead & { list: Quest[] } = {
     {
       kanji: "写",
       title: { en: "Fashion portrait photography", ja: "ファッションポートレート写真" },
-      text: { en: "Capturing style, light and character in portrait frames.", ja: "ポートレートの中に、スタイルと光と人柄を写す。" },
+      text: {
+        en: "Capturing style, light and character in portrait frames.",
+        ja: "ポートレートの中に、スタイルと光と人柄を写す。",
+      },
     },
     {
       kanji: "書",
       title: { en: "Calligraphy", ja: "カリグラフィー" },
-      text: { en: "Practising letterforms with ink, rhythm and precision.", ja: "墨とリズムと精度で、文字のかたちを磨く。" },
+      text: {
+        en: "Practising letterforms with ink, rhythm and precision.",
+        ja: "墨とリズムと精度で、文字のかたちを磨く。",
+      },
     },
     {
       kanji: "読",
       title: { en: "Reading", ja: "読書" },
-      text: { en: "Exploring ideas across tech, fiction and philosophy.", ja: "テクノロジー、小説、哲学をまたいでアイデアを探す。" },
+      text: {
+        en: "Exploring ideas across tech, fiction and philosophy.",
+        ja: "テクノロジー、小説、哲学をまたいでアイデアを探す。",
+      },
     },
     {
       kanji: "球",
       title: { en: "Tennis", ja: "テニス" },
-      text: { en: "Court sessions for focus, footwork and endurance.", ja: "集中力とフットワークと持久力を鍛えるコート練習。" },
+      text: {
+        en: "Court sessions for focus, footwork and endurance.",
+        ja: "集中力とフットワークと持久力を鍛えるコート練習。",
+      },
     },
   ],
 };

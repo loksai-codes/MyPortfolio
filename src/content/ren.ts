@@ -43,14 +43,26 @@ export const REN_LINES: L10nList = {
 
 /** Said ~0.7 s after a panel opens. */
 export const REN_SECTION: Partial<Record<SectionKey, L10n>> = {
-  about: { en: "This is Loksai! He builds AI systems, and loves explaining them.", ja: "こちらがロクサイ！AIシステムを作って、伝えるのが大好きなんだ。" },
-  projects: { en: "These are the projects on his laptop. Blind Flange is my favourite!", ja: "ノートパソコンの中の作品だよ。ぼくのお気に入りはブラインドフランジ！" },
-  experience: { en: "Here's where he has worked. Virtusa, IRMAI, and Wipro!", ja: "これまでの仕事だよ。Virtusa、IRMAI、そしてWipro！" },
+  about: {
+    en: "This is Loksai! He builds AI systems, and loves explaining them.",
+    ja: "こちらがロクサイ！AIシステムを作って、伝えるのが大好きなんだ。",
+  },
+  projects: {
+    en: "These are the projects on his laptop. Blind Flange is my favourite!",
+    ja: "ノートパソコンの中の作品だよ。ぼくのお気に入りはブラインドフランジ！",
+  },
+  experience: {
+    en: "Here's where he has worked. Virtusa, IRMAI, and Wipro!",
+    ja: "これまでの仕事だよ。Virtusa、IRMAI、そしてWipro！",
+  },
   skills: { en: "The lantern lights up his whole toolbox.", ja: "提灯が道具箱ぜんぶを照らしているよ。" },
   quests: {
     en: "When he isn't coding, he takes photos, writes calligraphy, reads, and plays tennis.",
     ja: "コードを書いていないときは、写真、カリグラフィー、読書、テニスをしているよ。",
   },
-  gallery: { en: "He has run more than fifteen events. Look at all these photos!", ja: "イベントを15回以上開いたんだ。写真を見てみて！" },
+  gallery: {
+    en: "He has run more than fifteen events. Look at all these photos!",
+    ja: "イベントを15回以上開いたんだ。写真を見てみて！",
+  },
   contact: { en: "Want to say hello? The shoji is open!", ja: "あいさつしたい？障子は開いているよ！" },
 };

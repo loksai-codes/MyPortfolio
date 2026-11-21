@@ -12,7 +12,15 @@ export interface Fx {
 /** Fireflies in both gardens, dust motes in the moonbeam, and three additive moonbeam sheets. */
 export function buildFx(k: Kit, pixelRatio: number): Fx {
   const materials: PointsMaterial[] = [];
-  function points(n: number, b: [number, number, number, number, number, number], color: number, size: number, amp: number, speed: number, bright: number) {
+  function points(
+    n: number,
+    b: [number, number, number, number, number, number],
+    color: number,
+    size: number,
+    amp: number,
+    speed: number,
+    bright: number,
+  ) {
     const g = new THREE.BufferGeometry(),
       pos: number[] = [],
       ph: number[] = [];
@@ -47,7 +55,20 @@ export function buildFx(k: Kit, pixelRatio: number): Fx {
   [1.85, 1.3, 0.75].forEach((y0) => {
     const s = y0 / 0.54;
     const g = new THREE.BufferGeometry();
-    const v = [-1.2, y0, -2.45, 1.2, y0, -2.45, -1.2 + 0.25 * s, 0.02, -2.45 + 0.8 * s, 1.2 + 0.25 * s, 0.02, -2.45 + 0.8 * s];
+    const v = [
+      -1.2,
+      y0,
+      -2.45,
+      1.2,
+      y0,
+      -2.45,
+      -1.2 + 0.25 * s,
+      0.02,
+      -2.45 + 0.8 * s,
+      1.2 + 0.25 * s,
+      0.02,
+      -2.45 + 0.8 * s,
+    ];
     g.setAttribute("position", new THREE.Float32BufferAttribute(v, 3));
     g.setAttribute("uv", new THREE.Float32BufferAttribute([0, 0, 1, 0, 0, 1, 1, 1], 2));
     g.setIndex([0, 2, 1, 1, 2, 3]);

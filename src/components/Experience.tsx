@@ -45,7 +45,9 @@ export default function Experience() {
     const unsubs: (() => void)[] = [];
     const fam = shippori.style.fontFamily;
     // Painted glyphs need the font; wait at most 2.5 s like the reference.
-    const fonts = Promise.all([document.fonts.load(`800 100px ${fam}`, sceneText.glyphs), document.fonts.ready]).catch(() => {});
+    const fonts = Promise.all([document.fonts.load(`800 100px ${fam}`, sceneText.glyphs), document.fonts.ready]).catch(
+      () => {},
+    );
     Promise.race([fonts, new Promise((r) => setTimeout(r, 2500))]).then(() => {
       if (cancelled) return;
       try {

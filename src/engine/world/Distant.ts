@@ -24,7 +24,8 @@ export function buildDistant(k: Kit): void {
       yy += 0.95;
     }
     mesh(new THREE.CylinderGeometry(0.04, 0.05, 1.6, 6), dk, 0, yy + 0.6, 0, P, false);
-    for (let n = 0; n < 6; n++) mesh(new THREE.TorusGeometry(0.1, 0.02, 4, 10), dk, 0, yy + 0.2 + n * 0.18, 0, P, false).rotation.x = Math.PI / 2;
+    for (let n = 0; n < 6; n++)
+      mesh(new THREE.TorusGeometry(0.1, 0.02, 4, 10), dk, 0, yy + 0.2 + n * 0.18, 0, P, false).rotation.x = Math.PI / 2;
     P.add(glowSprite(0xffb060, 3, new THREE.Vector3(0, 2, 0), 0.25));
   }
 

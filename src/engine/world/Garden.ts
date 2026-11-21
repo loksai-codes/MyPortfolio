@@ -15,7 +15,15 @@ import { buildNiwakiAndMaple } from "./Trees";
 export function buildGarden(k: Kit): void {
   const { mesh, scene, std, glowSprite } = k;
   // ground
-  const ground = mesh(new THREE.PlaneGeometry(140, 90), std({ map: mossTexture(), roughness: 1 }), 0, -0.36, -10, scene, false);
+  const ground = mesh(
+    new THREE.PlaneGeometry(140, 90),
+    std({ map: mossTexture(), roughness: 1 }),
+    0,
+    -0.36,
+    -10,
+    scene,
+    false,
+  );
   ground.rotation.x = -Math.PI / 2;
   // raked gravel courts (front + back)
   const gt = gravelTexture();
@@ -62,12 +70,23 @@ export function buildGarden(k: Kit): void {
     const sm = std({ color: 0x6c6860, roughness: 0.95 });
     mesh(new THREE.CylinderGeometry(0.28, 0.32, 0.1, 6), sm, 0, 0.05, 0, g);
     mesh(new THREE.CylinderGeometry(0.07, 0.09, 0.55, 8), sm, 0, 0.38, 0, g);
-    mesh(new THREE.BoxGeometry(0.3, 0.24, 0.3), std({ color: 0x221a10, emissive: 0xffb050, emissiveIntensity: 1.1 }), 0, 0.78, 0, g);
+    mesh(
+      new THREE.BoxGeometry(0.3, 0.24, 0.3),
+      std({ color: 0x221a10, emissive: 0xffb050, emissiveIntensity: 1.1 }),
+      0,
+      0.78,
+      0,
+      g,
+    );
     mesh(new THREE.ConeGeometry(0.38, 0.24, 6), sm, 0, 1.0, 0, g);
     g.add(glowSprite(0xffa850, 1.2, new THREE.Vector3(0, 0.78, 0), 0.55));
   });
   // bamboo fences (takegaki)
-  const fm = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.025, 0.025, 1, 6), std({ color: 0x6e6a3a, roughness: 0.6 }), 220);
+  const fm = new THREE.InstancedMesh(
+    new THREE.CylinderGeometry(0.025, 0.025, 1, 6),
+    std({ color: 0x6e6a3a, roughness: 0.6 }),
+    220,
+  );
   const d = new THREE.Object3D();
   let n = 0;
   (

@@ -12,11 +12,25 @@ export const skills: PanelHead & { groups: SkillGroup[] } = {
   title: { en: "The toolbox", ja: "道具箱" },
   sub: { en: "What the lantern lights up", ja: "提灯が照らすもの" },
   groups: [
-    { heading: { en: "Languages", ja: "言語" }, kanji: "言語", items: ["Python", "Java", "TypeScript", "SQL", "Cypher"] },
+    {
+      heading: { en: "Languages", ja: "言語" },
+      kanji: "言語",
+      items: ["Python", "Java", "TypeScript", "SQL", "Cypher"],
+    },
     {
       heading: { en: "GenAI & LLMs", ja: "生成AI・LLM" },
       kanji: "生成",
-      items: ["Claude", "Gemini", "RAG", "LangGraph", "LangChain", "MCP", "Fine-tuning", "Hugging Face", "Prompt engineering"],
+      items: [
+        "Claude",
+        "Gemini",
+        "RAG",
+        "LangGraph",
+        "LangChain",
+        "MCP",
+        "Fine-tuning",
+        "Hugging Face",
+        "Prompt engineering",
+      ],
     },
     {
       heading: { en: "Knowledge graphs", ja: "ナレッジグラフ" },

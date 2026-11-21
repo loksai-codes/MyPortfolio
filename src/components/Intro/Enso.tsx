@@ -3,7 +3,9 @@ import type { Moon } from "./introScene";
 /** Brush-stroke ensō drawn around the moon (stroke-dash animation in intro.css). */
 export function Enso({ moon }: { moon: Moon | null }) {
   const d = moon ? moon.r * 2.75 : 0;
-  const style = moon ? { left: moon.x - d / 2, top: moon.y - d / 2, width: d, height: d } : { visibility: "hidden" as const };
+  const style = moon
+    ? { left: moon.x - d / 2, top: moon.y - d / 2, width: d, height: d }
+    : { visibility: "hidden" as const };
   return (
     <svg id="ensoSvg" viewBox="0 0 200 200" style={style} aria-hidden="true">
       <defs>

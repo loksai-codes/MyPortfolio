@@ -14,7 +14,11 @@ export function buildMountains(k: Kit): void {
       x1 = 170;
     for (let i = 0; i <= N; i++) {
       const x = x0 + ((x1 - x0) * i) / N;
-      let y = y0 + Math.sin(x * 0.035 + seed) * amp * 0.5 + Math.sin(x * 0.09 + seed * 2) * amp * 0.22 + Math.sin(x * 0.21 + seed * 3) * amp * 0.08;
+      let y =
+        y0 +
+        Math.sin(x * 0.035 + seed) * amp * 0.5 +
+        Math.sin(x * 0.09 + seed * 2) * amp * 0.22 +
+        Math.sin(x * 0.21 + seed * 3) * amp * 0.08;
       (peaks ?? []).forEach(([px, ph, pw]) => {
         y += ph * Math.exp(-Math.pow((x - px) / pw, 2));
       });

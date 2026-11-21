@@ -8,7 +8,15 @@ export function buildGroundMist(k: Kit): void {
   const mt = groundMistTexture();
   const mist: THREE.Sprite[] = [];
   for (let i = 0; i < 26; i++) {
-    const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: mt, color: 0xb8b8e0, transparent: true, opacity: rnd(0.06, 0.14), depthWrite: false }));
+    const s = new THREE.Sprite(
+      new THREE.SpriteMaterial({
+        map: mt,
+        color: 0xb8b8e0,
+        transparent: true,
+        opacity: rnd(0.06, 0.14),
+        depthWrite: false,
+      }),
+    );
     const far = i < 12;
     s.scale.set(rnd(6, 12), rnd(1.2, 2.2), 1);
     s.position.set(rnd(-14, 14), rnd(-0.1, 0.5), far ? rnd(-16, -7) : rnd(4, 12));

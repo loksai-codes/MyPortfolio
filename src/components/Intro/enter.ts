@@ -16,7 +16,8 @@ export function onEngineReady() {
   }
 }
 
-const reducedMotion = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const reducedMotion = () =>
+  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /**
  * Leave the intro (reference `enter()`): fade/scale the intro out, open the doors at 0.9 s,

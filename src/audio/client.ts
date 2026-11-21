@@ -17,7 +17,9 @@ function load() {
 
 /** Fetch the audio chunk when the browser is idle (creates no AudioContext). */
 export function prefetchAudio() {
-  const ric = (window as { requestIdleCallback?: (cb: () => void) => void }).requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 1200));
+  const ric =
+    (window as { requestIdleCallback?: (cb: () => void) => void }).requestIdleCallback ??
+    ((cb: () => void) => setTimeout(cb, 1200));
   ric(() => void load());
 }
 

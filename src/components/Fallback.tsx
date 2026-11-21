@@ -238,7 +238,13 @@ export function Fallback() {
             <div className="ggrid">
               {tab.items.map((it) => (
                 <figure key={it.src}>
-                  <Image src={assetUrl(it.src)} alt={it.caption.en} width={480} height={360} sizes="(max-width: 900px) 45vw, 300px" />
+                  <Image
+                    src={assetUrl(it.src)}
+                    alt={it.caption.en}
+                    width={480}
+                    height={360}
+                    sizes="(max-width: 900px) 45vw, 300px"
+                  />
                   <figcaption>
                     <Bi v={it.caption} />
                   </figcaption>

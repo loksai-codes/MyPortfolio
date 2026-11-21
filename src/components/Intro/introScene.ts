@@ -67,7 +67,15 @@ export function startIntroScene(cv: HTMLCanvasElement, onMoon: (m: Moon) => void
   function blossom(x: CanvasRenderingContext2D, px: number, py: number, s: number) {
     for (let k = 0; k < 5; k++) {
       const a = (k / 5) * Math.PI * 2;
-      petal(x, px + Math.cos(a) * s * 0.55, py + Math.sin(a) * s * 0.55, s * 0.55, a + Math.PI / 2, k % 2 ? "#f7c6d3" : "#efa6bd", 1);
+      petal(
+        x,
+        px + Math.cos(a) * s * 0.55,
+        py + Math.sin(a) * s * 0.55,
+        s * 0.55,
+        a + Math.PI / 2,
+        k % 2 ? "#f7c6d3" : "#efa6bd",
+        1,
+      );
     }
     x.fillStyle = "#b9405f";
     x.beginPath();
@@ -211,7 +219,12 @@ export function startIntroScene(cv: HTMLCanvasElement, onMoon: (m: Moon) => void
             x.lineWidth = (w * (1 - i / pts.length) + 1.5) * s;
             x.beginPath();
             x.moveTo(ox - a[0] * s, oy + a[1] * s);
-            x.quadraticCurveTo(ox - ((a[0] + b[0]) / 2) * s + rnd(-8, 8), oy + ((a[1] + b[1]) / 2) * s + rnd(-8, 8), ox - b[0] * s, oy + b[1] * s);
+            x.quadraticCurveTo(
+              ox - ((a[0] + b[0]) / 2) * s + rnd(-8, 8),
+              oy + ((a[1] + b[1]) / 2) * s + rnd(-8, 8),
+              ox - b[0] * s,
+              oy + b[1] * s,
+            );
             x.stroke();
           }
         }
@@ -276,7 +289,8 @@ export function startIntroScene(cv: HTMLCanvasElement, onMoon: (m: Moon) => void
             [100, 120],
           ] as const
         ).forEach(([px, py]) => {
-          for (let k = 0; k < 4; k++) blossom(x, ox - (px + rnd(-26, 26)) * s, oy + (py + rnd(-22, 22)) * s, rnd(9, 14) * s);
+          for (let k = 0; k < 4; k++)
+            blossom(x, ox - (px + rnd(-26, 26)) * s, oy + (py + rnd(-22, 22)) * s, rnd(9, 14) * s);
         });
       }),
     ];
@@ -304,7 +318,13 @@ export function startIntroScene(cv: HTMLCanvasElement, onMoon: (m: Moon) => void
     ];
     layers.forEach((L, i) => {
       const sc = 1.04;
-      g.drawImage(L, (-sx * off[i]![0] - (W * (sc - 1)) / 2) * pr, (-sy * off[i]![1] - (H * (sc - 1)) / 2) * pr, W * sc * pr, H * sc * pr);
+      g.drawImage(
+        L,
+        (-sx * off[i]![0] - (W * (sc - 1)) / 2) * pr,
+        (-sy * off[i]![1] - (H * (sc - 1)) / 2) * pr,
+        W * sc * pr,
+        H * sc * pr,
+      );
       if (i === 0) {
         g.save();
         g.scale(pr, pr);

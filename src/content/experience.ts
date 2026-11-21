@@ -40,7 +40,10 @@ export const experience: PanelHead & { list: Job[]; honoursHeading: L10n; honour
           "Gemini + React payload generator for integration tests: 40% less setup time.",
           "LLM pipelines that pull NFR benchmarks out of architecture documents.",
         ],
-        ja: ["Gemini と React による結合テスト用ペイロード生成：準備時間を40%短縮。", "設計書から非機能要件の指標を抽出するLLMパイプライン。"],
+        ja: [
+          "Gemini と React による結合テスト用ペイロード生成：準備時間を40%短縮。",
+          "設計書から非機能要件の指標を抽出するLLMパイプライン。",
+        ],
       },
     },
     {
@@ -84,7 +87,10 @@ export const experience: PanelHead & { list: Job[]; honoursHeading: L10n; honour
           "Fine-tuned M2M100 across 12 language pairs (BLEU 0.35, ROUGE-L 0.42).",
           "Human-in-the-loop review cut translation errors by 15%.",
         ],
-        ja: ["M2M100 を12言語ペアでファインチューニング（BLEU 0.35、ROUGE-L 0.42）。", "人間参加型レビューで翻訳エラーを15%削減。"],
+        ja: [
+          "M2M100 を12言語ペアでファインチューニング（BLEU 0.35、ROUGE-L 0.42）。",
+          "人間参加型レビューで翻訳エラーを15%削減。",
+        ],
       },
     },
   ],

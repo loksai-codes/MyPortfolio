@@ -82,7 +82,11 @@ export class Engine {
     r.shadowMap.type = THREE.PCFShadowMap;
     r.shadowMap.autoUpdate = false;
     this.scene.fog = new THREE.Fog(0x221d42, 14, 62);
-    this.rig = new CameraRig(this.camera, () => ({ w: window.innerWidth, h: window.innerHeight }), !!opts.reducedMotion);
+    this.rig = new CameraRig(
+      this.camera,
+      () => ({ w: window.innerWidth, h: window.innerHeight }),
+      !!opts.reducedMotion,
+    );
 
     // Wire option callbacks to events.
     const ev = this.events;
@@ -193,6 +197,18 @@ export class Engine {
     this.kit.interactive.forEach((it) => (it.el = this.hotspots.get(it.key)));
   }
 
+  /** Renderer counters (for perf/leak checks). */
+  stats() {
+    const { memory, render, programs } = this.renderer.info;
+    return {
+      ...memory,
+      programs: programs?.length ?? 0,
+      calls: render.calls,
+      triangles: render.triangles,
+      pixelRatio: this.renderer.getPixelRatio(),
+    };
+  }
+
   dispose() {
     if (this.disposed) return;
     this.disposed = true;
@@ -242,7 +258,9 @@ export class Engine {
       t.addEventListener(type, fn as EventListener);
       this.disposers.push(() => t.removeEventListener(type, fn as EventListener));
     };
-    on(window, "pointermove", (e) => this.rig.pointer.set((e.clientX / window.innerWidth) * 2 - 1, (e.clientY / window.innerHeight) * 2 - 1));
+    on(window, "pointermove", (e) =>
+      this.rig.pointer.set((e.clientX / window.innerWidth) * 2 - 1, (e.clientY / window.innerHeight) * 2 - 1),
+    );
     on(this.canvas, "pointermove", (e) => {
       if (e.pointerType !== "mouse") return;
       const it = this.picker.pick(e.clientX, e.clientY);
@@ -319,7 +337,10 @@ export class Engine {
           const m = o as THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>;
           if (m.isMesh && o.userData.baseEm) {
             m.material.emissive.copy(o.userData.baseEm as THREE.Color).lerp(this.glowColor, it.glow * 0.35);
-            m.material.emissiveIntensity = Math.max(o.userData.baseEI as number, it.glow * 0.6 + (o.userData.baseEI as number));
+            m.material.emissiveIntensity = Math.max(
+              o.userData.baseEI as number,
+              it.glow * 0.6 + (o.userData.baseEI as number),
+            );
           }
         });
       }

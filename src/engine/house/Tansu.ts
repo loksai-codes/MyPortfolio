@@ -11,10 +11,22 @@ export function buildTansu(k: Kit): void {
   box(0.55, 1.05, 1.3, tw, 0, 0.56, 0, g);
   const front = std({ map: T.wood, color: 0xc08060, roughness: 0.5 });
   const rows: [number, [number, number][]][] = [
-    [0.16, [[-0.33, 0.6], [0.33, 0.6]]],
+    [
+      0.16,
+      [
+        [-0.33, 0.6],
+        [0.33, 0.6],
+      ],
+    ],
     [0.42, [[0, 1.24]]],
     [0.66, [[0, 1.24]]],
-    [0.9, [[-0.33, 0.6], [0.33, 0.6]]],
+    [
+      0.9,
+      [
+        [-0.33, 0.6],
+        [0.33, 0.6],
+      ],
+    ],
   ];
   rows.forEach(([y, cells]) =>
     cells.forEach(([z, w]) => {

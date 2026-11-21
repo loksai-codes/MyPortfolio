@@ -50,7 +50,8 @@ export function clack(a: AudioCore) {
   // water trickle after
   const wb = ctx.createBuffer(1, Math.floor(sr * 1.2), sr),
     wd = wb.getChannelData(0);
-  for (let i = 0; i < wd.length; i++) wd[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / wd.length, 2) * (Math.random() < 0.02 ? 1 : 0.15);
+  for (let i = 0; i < wd.length; i++)
+    wd[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / wd.length, 2) * (Math.random() < 0.02 ? 1 : 0.15);
   const ws = ctx.createBufferSource();
   ws.buffer = wb;
   const wf = ctx.createBiquadFilter();

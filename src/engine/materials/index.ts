@@ -19,7 +19,13 @@ export const waterMaterial = (moon: THREE.Vector3, lights: [THREE.Vector3, THREE
   new THREE.ShaderMaterial({
     transparent: true,
     fog: false,
-    uniforms: { t: { value: 0 }, moon: { value: moon }, l1: { value: lights[0] }, l2: { value: lights[1] }, l3: { value: lights[2] } },
+    uniforms: {
+      t: { value: 0 },
+      moon: { value: moon },
+      l1: { value: lights[0] },
+      l2: { value: lights[1] },
+      l3: { value: lights[2] },
+    },
     vertexShader: waterVertex,
     fragmentShader: waterFragment,
   }) as WaterMaterial;

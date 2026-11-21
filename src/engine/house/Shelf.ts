@@ -21,7 +21,9 @@ export function buildShelf(k: Kit): void {
       [0xc9b88a, 0.07],
       [0x2d5a3a, 0.105],
     ] as const
-  ).forEach(([c, y], i) => box(0.24, 0.032, 0.17, std({ color: c, roughness: 0.8 }), 0.02, 0.545 + y, -0.3 + i * 0.005, g));
+  ).forEach(([c, y], i) =>
+    box(0.24, 0.032, 0.17, std({ color: c, roughness: 0.8 }), 0.02, 0.545 + y, -0.3 + i * 0.005, g),
+  );
   // camera
   const cm = new THREE.Group();
   cm.position.set(0.02, 0.53, 0.02);
@@ -29,9 +31,24 @@ export function buildShelf(k: Kit): void {
   g.add(cm);
   box(0.17, 0.1, 0.07, std({ color: 0x1a1a1c, roughness: 0.4, metalness: 0.3 }), 0, 0.05, 0, cm);
   box(0.06, 0.03, 0.05, std({ color: 0x1a1a1c }), -0.04, 0.115, 0, cm);
-  const lens = mesh(new THREE.CylinderGeometry(0.035, 0.04, 0.08, 18), std({ color: 0x222, metalness: 0.5, roughness: 0.3 }), 0.02, 0.05, 0.07, cm);
+  const lens = mesh(
+    new THREE.CylinderGeometry(0.035, 0.04, 0.08, 18),
+    std({ color: 0x222, metalness: 0.5, roughness: 0.3 }),
+    0.02,
+    0.05,
+    0.07,
+    cm,
+  );
   lens.rotation.x = Math.PI / 2;
-  mesh(new THREE.CircleGeometry(0.026, 16), std({ color: 0x3344aa, roughness: 0.05, metalness: 0.8 }), 0.02, 0.05, 0.111, cm, false);
+  mesh(
+    new THREE.CircleGeometry(0.026, 16),
+    std({ color: 0x3344aa, roughness: 0.05, metalness: 0.8 }),
+    0.02,
+    0.05,
+    0.111,
+    cm,
+    false,
+  );
   // ink stone + brush rest
   box(0.1, 0.02, 0.16, std({ color: 0x111, roughness: 0.3 }), 0.06, 0.53, 0.3, g);
   const br = mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.2, 6), std({ color: 0xa07a4a }), 0.0, 0.56, 0.3, g);
@@ -43,7 +60,14 @@ export function buildShelf(k: Kit): void {
   rk.position.set(-0.12, 0, 0.62);
   rk.rotation.set(0, 0, -0.2);
   g.add(rk);
-  const frame = mesh(new THREE.TorusGeometry(0.12, 0.012, 8, 28), std({ color: 0xd8d8dc, metalness: 0.3, roughness: 0.4 }), 0, 0.52, 0, rk);
+  const frame = mesh(
+    new THREE.TorusGeometry(0.12, 0.012, 8, 28),
+    std({ color: 0xd8d8dc, metalness: 0.3, roughness: 0.4 }),
+    0,
+    0.52,
+    0,
+    rk,
+  );
   frame.scale.y = 1.3;
   frame.rotation.y = Math.PI / 2;
   const strings = mesh(

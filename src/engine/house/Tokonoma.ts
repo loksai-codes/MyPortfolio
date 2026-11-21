@@ -7,14 +7,29 @@ export function buildTokonoma(k: Kit, scrollTex: THREE.Texture): void {
   const { M, mesh, scene, std } = k;
   const g = new THREE.Group();
   scene.add(g);
-  const s = mesh(new THREE.PlaneGeometry(0.6, 1.5), std({ map: scrollTex, roughness: 0.9 }), -2.97, 1.2, -1.45, g, false);
+  const s = mesh(
+    new THREE.PlaneGeometry(0.6, 1.5),
+    std({ map: scrollTex, roughness: 0.9 }),
+    -2.97,
+    1.2,
+    -1.45,
+    g,
+    false,
+  );
   s.rotation.y = Math.PI / 2;
   const rod = mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.72, 10), M.black, -2.95, 0.44, -1.45, g);
   rod.rotation.x = Math.PI / 2;
   const rod2 = mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.64, 10), M.dark, -2.96, 1.96, -1.45, g);
   rod2.rotation.x = Math.PI / 2;
   // ikebana
-  mesh(new THREE.CylinderGeometry(0.07, 0.1, 0.26, 16), std({ color: 0x1f2b4a, roughness: 0.3, metalness: 0.1 }), -2.62, 0.27, -0.95, g);
+  mesh(
+    new THREE.CylinderGeometry(0.07, 0.1, 0.26, 16),
+    std({ color: 0x1f2b4a, roughness: 0.3, metalness: 0.1 }),
+    -2.62,
+    0.27,
+    -0.95,
+    g,
+  );
   const stem = std({ color: 0x3d2b1a });
   const bl = std({ color: 0xf2b5c6, emissive: 0xf2b5c6, emissiveIntensity: 0.08 });
   (

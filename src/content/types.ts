@@ -6,7 +6,16 @@ export type L10n = { en: string; ja: string };
 /** A bilingual list (e.g. bullet points). */
 export type L10nList = { en: string[]; ja: string[] };
 
-export const SECTION_KEYS = ["about", "projects", "experience", "skills", "quests", "gallery", "contact", "ren"] as const;
+export const SECTION_KEYS = [
+  "about",
+  "projects",
+  "experience",
+  "skills",
+  "quests",
+  "gallery",
+  "contact",
+  "ren",
+] as const;
 export type SectionKey = (typeof SECTION_KEYS)[number];
 export const isSectionKey = (v: unknown): v is SectionKey =>
   typeof v === "string" && (SECTION_KEYS as readonly string[]).includes(v);

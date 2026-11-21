@@ -30,13 +30,36 @@ export function buildDesk(k: Kit, screenTex: THREE.Texture): void {
   lid.rotation.x = -0.32;
   lp.add(lid);
   box(0.46, 0.3, 0.012, alu, 0, 0.15, 0, lid);
-  mesh(new THREE.PlaneGeometry(0.42, 0.26), new THREE.MeshBasicMaterial({ map: screenTex, toneMapped: false }), 0, 0.15, 0.007, lid, false);
+  mesh(
+    new THREE.PlaneGeometry(0.42, 0.26),
+    new THREE.MeshBasicMaterial({ map: screenTex, toneMapped: false }),
+    0,
+    0.15,
+    0.007,
+    lid,
+    false,
+  );
   lid.add(glowSprite(0x8ea0ff, 0.9, new THREE.Vector3(0, 0.15, 0.05), 0.35));
   // tea set
   const cer = std({ color: 0x3c4a3a, roughness: 0.35 });
   mesh(new THREE.CylinderGeometry(0.04, 0.032, 0.06, 16), cer, 0.32, 0.395, 0.15, g);
-  mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.002, 16), std({ color: 0x7a8a3a, roughness: 0.2 }), 0.32, 0.424, 0.15, g, false);
-  const pot = mesh(new THREE.SphereGeometry(0.075, 20, 14), std({ color: 0x5a2e1e, roughness: 0.4 }), 0.3, 0.43, -0.18, g);
+  mesh(
+    new THREE.CylinderGeometry(0.035, 0.035, 0.002, 16),
+    std({ color: 0x7a8a3a, roughness: 0.2 }),
+    0.32,
+    0.424,
+    0.15,
+    g,
+    false,
+  );
+  const pot = mesh(
+    new THREE.SphereGeometry(0.075, 20, 14),
+    std({ color: 0x5a2e1e, roughness: 0.4 }),
+    0.3,
+    0.43,
+    -0.18,
+    g,
+  );
   pot.scale.y = 0.8;
   const sp = mesh(new THREE.CylinderGeometry(0.008, 0.014, 0.08, 8), pot.material, 0.38, 0.45, -0.18, g);
   sp.rotation.z = -1;

@@ -26,7 +26,12 @@ export function buildRen(k: Kit): RenController {
   const furD = std({ color: 0x8a70c4, roughness: 0.95 });
   const pinkM = std({ color: 0xd9a3c4, roughness: 0.9 });
   const cream = std({ color: 0xe8ded8, roughness: 0.95 });
-  const glowM = new THREE.MeshStandardMaterial({ color: 0xffe08a, emissive: 0xffcf5a, emissiveIntensity: 1.6, roughness: 0.3 });
+  const glowM = new THREE.MeshStandardMaterial({
+    color: 0xffe08a,
+    emissive: 0xffcf5a,
+    emissiveIntensity: 1.6,
+    roughness: 0.3,
+  });
   const eyeM = std({ color: 0x0d0a14, roughness: 0.08, metalness: 0.1 });
   const white = new THREE.MeshBasicMaterial({ color: 0xffffff });
   const S = (r: number, ws = 24) => new THREE.SphereGeometry(r, ws, (ws * 0.75) | 0);
@@ -78,7 +83,12 @@ export function buildRen(k: Kit): RenController {
   // antennae
   const orbs: THREE.Mesh<THREE.SphereGeometry, THREE.MeshStandardMaterial>[] = [];
   [-1, 1].forEach((sd) => {
-    const pts = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(sd * 0.02, 0.1, 0), new THREE.Vector3(sd * 0.06, 0.2, 0.01), new THREE.Vector3(sd * 0.13, 0.3, 0.02)];
+    const pts = [
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(sd * 0.02, 0.1, 0),
+      new THREE.Vector3(sd * 0.06, 0.2, 0.01),
+      new THREE.Vector3(sd * 0.13, 0.3, 0.02),
+    ];
     const curve = new THREE.CatmullRomCurve3(pts);
     const a = new THREE.Group();
     a.position.set(sd * 0.07, 0.2, 0);
@@ -87,9 +97,25 @@ export function buildRen(k: Kit): RenController {
     mesh(new THREE.TubeGeometry(curve, 16, 0.014, 8), furD, 0, 0, 0, a, false);
     [0.35, 0.55, 0.75].forEach((t) => {
       const p = curve.getPoint(t);
-      const tw = mesh(new THREE.CylinderGeometry(0.006, 0.009, 0.06, 6), furD, p.x + sd * 0.022, p.y + 0.015, p.z, a, false);
+      const tw = mesh(
+        new THREE.CylinderGeometry(0.006, 0.009, 0.06, 6),
+        furD,
+        p.x + sd * 0.022,
+        p.y + 0.015,
+        p.z,
+        a,
+        false,
+      );
       tw.rotation.z = sd * -0.9;
-      const tw2 = mesh(new THREE.CylinderGeometry(0.006, 0.009, 0.05, 6), furD, p.x - sd * 0.018, p.y + 0.02, p.z, a, false);
+      const tw2 = mesh(
+        new THREE.CylinderGeometry(0.006, 0.009, 0.05, 6),
+        furD,
+        p.x - sd * 0.018,
+        p.y + 0.02,
+        p.z,
+        a,
+        false,
+      );
       tw2.rotation.z = sd * 0.7;
     });
     const tip = pts[3]!;
@@ -151,10 +177,17 @@ export function buildRen(k: Kit): RenController {
         ly = -look.y * 0.25;
       head.rotation.y += (lx - head.rotation.y) * dt * 3;
       head.rotation.x += (ly * 0.6 - head.rotation.x) * dt * 3;
-      ears.forEach((e, i) => (e.rotation.z = Math.sin(t * 3 + i) * 0.06 + (hop > 0 ? Math.sin(t * 20) * 0.15 : 0) + (talking ? Math.sin(t * 9 + i) * 0.08 : 0)));
+      ears.forEach(
+        (e, i) =>
+          (e.rotation.z =
+            Math.sin(t * 3 + i) * 0.06 +
+            (hop > 0 ? Math.sin(t * 20) * 0.15 : 0) +
+            (talking ? Math.sin(t * 9 + i) * 0.08 : 0)),
+      );
       const bl = t % 4.2 < 0.12 ? 0.1 : 1;
       eyes.forEach((e) => (e.scale.y += (bl - e.scale.y) * 0.5));
-      const g = 1.4 + Math.sin(t * 2.5) * 0.5 + (hovered ? 1 : 0) + hp * 1.5 + (talking ? 1.2 + Math.sin(t * 14) * 0.6 : 0);
+      const g =
+        1.4 + Math.sin(t * 2.5) * 0.5 + (hovered ? 1 : 0) + hp * 1.5 + (talking ? 1.2 + Math.sin(t * 14) * 0.6 : 0);
       orbs.forEach((o, i) => (o.material.emissiveIntensity = g + Math.sin(t * 3 + i) * 0.2));
       glows.forEach((gs) => (gs.material.opacity = 0.45 + g * 0.18));
     },

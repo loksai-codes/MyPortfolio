@@ -30,7 +30,12 @@ export function IntroScreen() {
   const loadMsg = webgl === "pending" ? ui.loading : webgl === "fail" ? ui.loadFail : null;
 
   return (
-    <div id="intro" className={phase === "idle" ? undefined : phase === "leave" ? "leave" : "leave gone"} aria-hidden={entered} inert={phase !== "idle"}>
+    <div
+      id="intro"
+      className={phase === "idle" ? undefined : phase === "leave" ? "leave" : "leave gone"}
+      aria-hidden={entered}
+      inert={phase !== "idle"}
+    >
       {phase !== "gone" && <IntroCanvas onMoon={setMoon} />}
       <Enso moon={moon} />
       <div className="intro-top">

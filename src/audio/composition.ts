@@ -66,7 +66,8 @@ export class Composition {
   private k = (n: string, t: number, v: number, o?: KotoOpts) => koto(this.a, n, t, v, o);
 
   private sharara(t: number, from = 2, to = 12, step = 0.055, v = 0.22) {
-    for (let i = from; i <= to; i++) this.k(SCALE[i]!, t + (i - from) * step, v * (0.6 + (0.4 * (i - from)) / (to - from)));
+    for (let i = from; i <= to; i++)
+      this.k(SCALE[i]!, t + (i - from) * step, v * (0.6 + (0.4 * (i - from)) / (to - from)));
   }
 
   private addSakura(t0: number, oct = 0, vol = 1) {
@@ -77,7 +78,11 @@ export class Composition {
       const long = d >= 2,
         tt = t,
         bb = beat;
-      const op: KotoOpts = long ? (Math.random() < 0.5 ? { vib: 0.5 } : { bend: [d * BEAT * 0.45, 1, d * BEAT * 0.8] }) : {};
+      const op: KotoOpts = long
+        ? Math.random() < 0.5
+          ? { vib: 0.5 }
+          : { bend: [d * BEAT * 0.45, 1, d * BEAT * 0.8] }
+        : {};
       this.queue.push([tt, () => this.k(name, tt, 0.55 * vol, op)]);
       if (bb % 4 === 0) this.queue.push([tt, () => this.k(shift(n, oct - 1), tt + 0.012, 0.28 * vol)]);
       if (bb % 4 === 0) {

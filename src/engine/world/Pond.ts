@@ -9,10 +9,22 @@ import { MOON_POS } from "./Sky";
 export function buildPond(k: Kit): void {
   const { mesh, scene, std } = k;
   const { C: PC, RX: RXp, RZ: RZp } = POND;
-  const basin = mesh(new THREE.CircleGeometry(1, 48), std({ color: 0x0b1416, roughness: 1 }), PC.x, -0.62, PC.z, scene, false);
+  const basin = mesh(
+    new THREE.CircleGeometry(1, 48),
+    std({ color: 0x0b1416, roughness: 1 }),
+    PC.x,
+    -0.62,
+    PC.z,
+    scene,
+    false,
+  );
   basin.rotation.x = -Math.PI / 2;
   basin.scale.set(RXp, RZp, 1);
-  const waterMat = waterMaterial(MOON_POS, [new THREE.Vector3(-1.85, 1.72, 1.0), new THREE.Vector3(2.45, 0.5, 1.55), new THREE.Vector3(0, 1.2, 1.5)]);
+  const waterMat = waterMaterial(MOON_POS, [
+    new THREE.Vector3(-1.85, 1.72, 1.0),
+    new THREE.Vector3(2.45, 0.5, 1.55),
+    new THREE.Vector3(0, 1.2, 1.5),
+  ]);
   const water = new THREE.Mesh(new THREE.CircleGeometry(1, 64), waterMat);
   water.rotation.x = -Math.PI / 2;
   water.scale.set(RXp, RZp, 1);
@@ -20,7 +32,11 @@ export function buildPond(k: Kit): void {
   water.renderOrder = 3;
   scene.add(water);
   // pond edge rocks
-  const ri = new THREE.InstancedMesh(new THREE.DodecahedronGeometry(1, 1), std({ color: 0x55524d, roughness: 0.95, flatShading: true }), 34);
+  const ri = new THREE.InstancedMesh(
+    new THREE.DodecahedronGeometry(1, 1),
+    std({ color: 0x55524d, roughness: 0.95, flatShading: true }),
+    34,
+  );
   const d = new THREE.Object3D();
   const cc = new THREE.Color();
   const tints = [0x55524d, 0x4a4843, 0x5f5b54];

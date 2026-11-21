@@ -26,11 +26,27 @@ export function buildSky(k: Kit): void {
   scene.add(
     new THREE.Points(
       sg,
-      new THREE.PointsMaterial({ color: 0xffffff, size: 1.6, sizeAttenuation: false, fog: false, transparent: true, opacity: 0.75, depthWrite: false }),
+      new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 1.6,
+        sizeAttenuation: false,
+        fog: false,
+        transparent: true,
+        opacity: 0.75,
+        depthWrite: false,
+      }),
     ),
   );
   // moon + halo
-  mesh(new THREE.SphereGeometry(5.5, 32, 32), new THREE.MeshBasicMaterial({ color: 0xfff3d6, fog: false }), MOON_POS.x, MOON_POS.y, MOON_POS.z, scene, false);
+  mesh(
+    new THREE.SphereGeometry(5.5, 32, 32),
+    new THREE.MeshBasicMaterial({ color: 0xfff3d6, fog: false }),
+    MOON_POS.x,
+    MOON_POS.y,
+    MOON_POS.z,
+    scene,
+    false,
+  );
   const halo = glowSprite(0xffe6c0, 46, MOON_POS, 0.55);
   halo.material.blending = THREE.AdditiveBlending;
   scene.add(halo);
@@ -39,7 +55,14 @@ export function buildSky(k: Kit): void {
   const clouds: THREE.Sprite[] = [];
   for (let i = 0; i < 7; i++) {
     const s = new THREE.Sprite(
-      new THREE.SpriteMaterial({ map: ct, color: i % 2 ? 0x8a86b8 : 0x6e6a9c, transparent: true, opacity: rnd(0.35, 0.6), depthWrite: false, fog: false }),
+      new THREE.SpriteMaterial({
+        map: ct,
+        color: i % 2 ? 0x8a86b8 : 0x6e6a9c,
+        transparent: true,
+        opacity: rnd(0.35, 0.6),
+        depthWrite: false,
+        fog: false,
+      }),
     );
     s.scale.set(rnd(40, 70), rnd(12, 20), 1);
     s.position.set(rnd(-120, 120), rnd(22, 44), -142 + rnd(-4, 4));

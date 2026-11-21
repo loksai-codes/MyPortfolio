@@ -56,7 +56,14 @@ export function TopBar() {
       <div className="tools">
         <LanguageToggle />
         <SoundToggle />
-        <button type="button" id="menuBtn" aria-label={t(ui.aMenu)} aria-expanded={menuOpen} aria-controls="nav" onClick={() => setMenu(!menuOpen)}>
+        <button
+          type="button"
+          id="menuBtn"
+          aria-label={t(ui.aMenu)}
+          aria-expanded={menuOpen}
+          aria-controls="nav"
+          onClick={() => setMenu(!menuOpen)}
+        >
           ☰
         </button>
       </div>

@@ -13,7 +13,10 @@ export const ui = {
   },
   hint: { en: "Click objects in the room to explore", ja: "部屋の物をクリックして探索" },
   introTitle: { en: "Welcome to Loksai's room", ja: "ロクサイの部屋へようこそ" },
-  introSub: { en: "A small washitsu of projects, paths and one purple companion", ja: "作品と道と、紫の相棒がいる小さな和室" },
+  introSub: {
+    en: "A small washitsu of projects, paths and one purple companion",
+    ja: "作品と道と、紫の相棒がいる小さな和室",
+  },
   vertical: { en: "一期一会 ・ 和の部屋", ja: "一期一会 ・ 和の部屋" },
   enterSound: { en: "ENTER · 入る", ja: "入る · ENTER" },
   enterQuiet: { en: "IN SILENCE", ja: "音なしで" },

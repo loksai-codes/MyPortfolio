@@ -33,7 +33,13 @@ function resetPetal(p: Partial<Petal>, init = false): Petal {
 export function buildPetals(k: Kit): void {
   const petals = new THREE.InstancedMesh(
     new THREE.PlaneGeometry(0.035, 0.025),
-    new THREE.MeshStandardMaterial({ color: 0xf6bfd0, emissive: 0xf2a5bf, emissiveIntensity: 0.35, side: THREE.DoubleSide, roughness: 0.8 }),
+    new THREE.MeshStandardMaterial({
+      color: 0xf6bfd0,
+      emissive: 0xf2a5bf,
+      emissiveIntensity: 0.35,
+      side: THREE.DoubleSide,
+      roughness: 0.8,
+    }),
     PN,
   );
   petals.castShadow = false;

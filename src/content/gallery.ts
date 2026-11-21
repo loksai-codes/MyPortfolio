@@ -44,9 +44,21 @@ export const gallery: PanelHead & {
       key: "events",
       label: { en: "Events", ja: "イベント" },
       items: [
-        { src: "event-talk", caption: { en: "Alumni talk: hackathon strategy with second-year students", ja: "卒業生トーク：2年生とハッカソンの戦略" } },
-        { src: "event-audience", caption: { en: "From problem statement to solution", ja: "課題からソリューションへ" } },
-        { src: "event-felicitation", caption: { en: "Felicitated by the department after the talk", ja: "講演後、学科から表彰" } },
+        {
+          src: "event-talk",
+          caption: {
+            en: "Alumni talk: hackathon strategy with second-year students",
+            ja: "卒業生トーク：2年生とハッカソンの戦略",
+          },
+        },
+        {
+          src: "event-audience",
+          caption: { en: "From problem statement to solution", ja: "課題からソリューションへ" },
+        },
+        {
+          src: "event-felicitation",
+          caption: { en: "Felicitated by the department after the talk", ja: "講演後、学科から表彰" },
+        },
         { src: "event-poster", caption: { en: "Alumni Talk Series poster", ja: "卒業生トークシリーズのポスター" } },
         {
           src: "event-collage",
@@ -62,10 +74,19 @@ export const gallery: PanelHead & {
       key: "awards",
       label: { en: "Awards", ja: "受賞" },
       items: [
-        { src: "award-jatayu", caption: { en: "Winner — Virtusa Jatayu Season IV (GenAI ideathon)", ja: "Virtusa Jatayu シーズン4 優勝（生成AIアイデアソン）" } },
+        {
+          src: "award-jatayu",
+          caption: {
+            en: "Winner — Virtusa Jatayu Season IV (GenAI ideathon)",
+            ja: "Virtusa Jatayu シーズン4 優勝（生成AIアイデアソン）",
+          },
+        },
         {
           src: "award-thinktank",
-          caption: { en: "SBU Growth Markets winner — team “The Think Tank” at Jatayu", ja: "Jatayu SBU Growth Markets 優勝チーム「The Think Tank」" },
+          caption: {
+            en: "SBU Growth Markets winner — team “The Think Tank” at Jatayu",
+            ja: "Jatayu SBU Growth Markets 優勝チーム「The Think Tank」",
+          },
         },
         {
           src: "award-alts-photo",
@@ -76,7 +97,10 @@ export const gallery: PanelHead & {
         },
         {
           src: "award-alts-cert",
-          caption: { en: "Certificate of Achievement — Paper Presentation, Presto 2K23", ja: "Presto 2K23 論文発表 表彰状" },
+          caption: {
+            en: "Certificate of Achievement — Paper Presentation, Presto 2K23",
+            ja: "Presto 2K23 論文発表 表彰状",
+          },
         },
       ],
     },
@@ -119,16 +143,31 @@ export const gallery: PanelHead & {
             ja: "インターネットソサエティ「コンピュータネットワークの設計と構築」（2024年11月）",
           },
         },
-        { src: "cert-neo4j", caption: { en: "Neo4j Certified Professional (Jan 2026)", ja: "Neo4j 認定プロフェッショナル（2026年1月）" } },
+        {
+          src: "cert-neo4j",
+          caption: { en: "Neo4j Certified Professional (Jan 2026)", ja: "Neo4j 認定プロフェッショナル（2026年1月）" },
+        },
       ],
     },
     {
       key: "news",
       label: { en: "In the news", ja: "新聞掲載" },
       items: [
-        { src: "news-1", caption: { en: "Sakshi (Telugu daily): talent at a national-level seminar", ja: "サクシ紙（テルグ語日刊紙）：全国セミナーでの活躍" } },
+        {
+          src: "news-1",
+          caption: {
+            en: "Sakshi (Telugu daily): talent at a national-level seminar",
+            ja: "サクシ紙（テルグ語日刊紙）：全国セミナーでの活躍",
+          },
+        },
         { src: "news-2", caption: { en: "Featured in Sakshi", ja: "サクシ紙に掲載" } },
-        { src: "news-3", caption: { en: "Sakshi: recognition for web application development", ja: "サクシ紙：Webアプリケーション開発での活躍" } },
+        {
+          src: "news-3",
+          caption: {
+            en: "Sakshi: recognition for web application development",
+            ja: "サクシ紙：Webアプリケーション開発での活躍",
+          },
+        },
       ],
     },
   ],

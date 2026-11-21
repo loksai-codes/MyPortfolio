@@ -18,7 +18,15 @@ export function buildGalleryWall(k: Kit, photos: readonly [string, string, strin
     box(0.032, h + 0.02, w + 0.02, std({ color: 0xf3ead8, roughness: 0.9 }), 2.98, y, z, g, false);
     const tx = ld.load(photos[i]!);
     tx.colorSpace = THREE.SRGBColorSpace;
-    const ph = mesh(new THREE.PlaneGeometry(w - 0.03, h - 0.03), std({ map: tx, roughness: 0.7 }), 2.962, y, z, g, false);
+    const ph = mesh(
+      new THREE.PlaneGeometry(w - 0.03, h - 0.03),
+      std({ map: tx, roughness: 0.7 }),
+      2.962,
+      y,
+      z,
+      g,
+      false,
+    );
     ph.rotation.y = -Math.PI / 2;
   });
   // small brass picture light
