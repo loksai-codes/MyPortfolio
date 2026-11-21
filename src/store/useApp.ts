@@ -7,6 +7,10 @@ export type WebGLState = "pending" | "ok" | "fail";
 interface AppState {
   lang: Lang;
   section: SectionKey | null;
+  /** Last opened section: its content stays rendered while the scroll rolls up. */
+  lastSection: SectionKey | null;
+  /** Any panel opened yet (the hint never returns after that). */
+  everOpened: boolean;
   /** Intro dismissed and the room is visible (drives `body.entered`). */
   entered: boolean;
   soundOn: boolean;
@@ -48,6 +52,8 @@ export function initialLang(): Lang {
 export const useApp = create<AppState>()((set, get) => ({
   lang: "en",
   section: null,
+  lastSection: null,
+  everOpened: false,
   entered: false,
   soundOn: false,
   voiceOn: true,
@@ -66,7 +72,7 @@ export const useApp = create<AppState>()((set, get) => ({
     }
     set({ lang });
   },
-  open: (section) => set({ section, menuOpen: false }),
+  open: (section) => set({ section, lastSection: section, everOpened: true, menuOpen: false }),
   close: () => set({ section: null }),
   setEntered: () => set({ entered: true }),
   setSound: (soundOn) => set({ soundOn }),

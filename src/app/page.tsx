@@ -1,3 +1,5 @@
+import { SiteShell } from "@/components/SiteShell";
+
 export default function Page() {
-  return <main />;
+  return <SiteShell />;
 }

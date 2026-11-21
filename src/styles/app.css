@@ -7,3 +7,7 @@
 .ggrid figure button{display:block;width:100%;padding:0;text-align:left}
 #lightbox .lb-inner{display:block}
 #lightbox img{display:block;height:auto;width:auto}
+.ggrid figure img{height:auto}
+.portrait img{flex:none}
+/* intro: show only the active language before hydration */
+html[data-lang="ja"] .l-en,html:not([data-lang="ja"]) .l-ja{display:none}
