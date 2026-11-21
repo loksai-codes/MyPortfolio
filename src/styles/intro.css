@@ -1,0 +1,30 @@
+/* Ported verbatim from reference/index.html — intro screen */
+/* ---------- intro ---------- */
+#intro{position:fixed;inset:0;z-index:50;background:#070920;overflow:hidden;transition:opacity 1.6s ease,transform 2.2s var(--ease),filter 1.6s}
+#intro.leave{opacity:0;transform:scale(1.18);filter:blur(8px);pointer-events:none}
+#intro.gone{display:none}
+#introCv{position:absolute;inset:0;width:100%;height:100%}
+#ensoSvg{position:absolute;pointer-events:none;overflow:visible}
+#ensoSvg path{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.6s cubic-bezier(.6,0,.2,1) 1s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.intro-ui{position:absolute;left:8vw;top:50%;transform:translateY(-50%);max-width:620px}
+.intro-ui .k{font-size:12px;letter-spacing:.55em;color:var(--sakura);opacity:0;animation:up 1.2s .6s forwards}
+.intro-ui h2{font-family:var(--disp);font-weight:600;font-size:clamp(56px,8.5vw,128px);line-height:.88;margin:22px 0 14px;letter-spacing:-.01em}
+.intro-ui h2 .w{display:block;overflow:hidden}
+.intro-ui h2 .w span{display:inline-block;transform:translateY(105%);animation:rise 1.4s var(--ease) forwards}
+.intro-ui h2 .w:nth-child(1) span{animation-delay:1.0s}.intro-ui h2 .w:nth-child(2) span{animation-delay:1.18s}
+@keyframes rise{to{transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.intro-ui .jp{font-family:var(--serif);font-size:clamp(16px,1.6vw,22px);letter-spacing:.75em;opacity:0;animation:up 1.2s 1.6s forwards}
+.intro-ui .ln{width:0;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:30px 0 20px;animation:grow 1.4s var(--ease) 1.9s forwards}
+@keyframes grow{to{width:300px}}
+.intro-ui .ro{font-size:12px;letter-spacing:.42em;opacity:0;animation:up 1.2s 2.1s forwards}
+.intro-ui .ro i{color:var(--gold);font-style:normal;margin:0 8px}
+.intro-btns{display:flex;gap:14px;margin-top:46px;opacity:0;animation:up 1.2s 2.4s forwards;flex-wrap:wrap}
+.intro-btns button{padding:16px 30px;border-radius:999px;font-size:12px;letter-spacing:.32em;transition:.4s var(--ease);border:1px solid rgba(242,232,213,.35)}
+.intro-btns button.main{background:var(--washi);color:var(--ink);font-weight:700;border-color:var(--washi)}
+.intro-btns button.main:hover{background:var(--gold2);border-color:var(--gold2);letter-spacing:.38em}
+.intro-btns button:not(.main):hover{border-color:var(--gold2);color:var(--gold2)}
+.intro-top{position:absolute;left:8vw;right:8vw;top:34px;display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.42em;opacity:0;animation:up 1.2s .3s forwards}
+.intro-bot{position:absolute;left:8vw;bottom:32px;font-size:10.5px;letter-spacing:.42em;opacity:0;animation:up 1.2s 2.8s forwards;color:#b8afc7}
+#loadmsg{position:absolute;right:8vw;bottom:32px;font-size:10.5px;letter-spacing:.3em;color:#b8afc7}
