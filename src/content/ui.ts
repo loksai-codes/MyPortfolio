@@ -6,7 +6,7 @@ export const ui = {
   heroKicker: { en: "WELCOME TO MY ROOM", ja: "ようこそ、わたしの部屋へ" },
   introKicker: { en: "今宵、ようこそ — WELCOME, TONIGHT", ja: "今宵、ようこそ — WELCOME, TONIGHT" },
   introTop: { en: "月夜 · LOKSAI PALYAM", ja: "月夜 · LOKSAI PALYAM" },
-  introBot: { en: "♪ KOTO · BEST WITH SOUND", ja: "♪ 箏の音とともにどうぞ" },
+  introBot: { en: "Best experienced with sound on", ja: "音をオンにしてお楽しみください" },
   heroLine: {
     en: "AI backends, knowledge graphs and the stories that explain them. Pull up a cushion — pick anything in the room.",
     ja: "AIバックエンド、ナレッジグラフ、そしてそれを伝える物語。座布団にどうぞ — 部屋の物を選んでください。",

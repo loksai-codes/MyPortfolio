@@ -184,6 +184,7 @@
   opacity: 0;
   animation: up 1.2s 2.8s forwards;
   color: var(--intro-muted);
+  text-transform: uppercase; /* matches the tracked caps of the rest of the intro row */
 }
 #loadmsg {
   position: absolute;
