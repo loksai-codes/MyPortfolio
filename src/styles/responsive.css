@@ -137,6 +137,10 @@
   .vert {
     display: none;
   }
+  .hs {
+    padding: var(--space-1); /* compact: ~31px tall, still above the 24px target minimum */
+    gap: var(--space-1);
+  }
   .hs .tag {
     font-size: var(--text-2xs);
   }

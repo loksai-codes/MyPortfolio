@@ -70,7 +70,6 @@ export class Engine {
   private sizes = new WeakMap<Element, { w: number; h: number }>();
   private bubbleAt = { x: 0, y: 0 };
   private labelOffset = new WeakMap<Element, { x: number; y: number }>();
-  private miniSizes = new WeakMap<Element, { w: number; h: number }>();
 
   constructor(
     private canvas: HTMLCanvasElement,
@@ -206,9 +205,7 @@ export class Engine {
         for (const e of entries) {
           const b = e.borderBoxSize?.[0];
           const el = e.target as HTMLElement;
-          const size = b ? { w: b.inlineSize, h: b.blockSize } : { w: el.offsetWidth, h: el.offsetHeight };
-          // Collapsed labels are measured separately so the full size stays known for the layout decision.
-          (el.classList.contains("mini") ? this.miniSizes : this.sizes).set(el, size);
+          this.sizes.set(el, b ? { w: b.inlineSize, h: b.blockSize } : { w: el.offsetWidth, h: el.offsetHeight });
         }
       });
       this.disposers.push(() => this.sizer?.disconnect());
@@ -374,8 +371,7 @@ export class Engine {
         const x = (this.tmp.x * 0.5 + 0.5) * w,
           y = (-this.tmp.y * 0.5 + 0.5) * h;
         const size = this.sizes.get(el);
-        if (vis && size && size.w > 0)
-          labels.push({ el, w: size.w, h: size.h, left: x - size.w / 2, top: y - size.h, ax: x, ay: y });
+        if (vis && size && size.w > 0) labels.push({ el, w: size.w, h: size.h, left: x - size.w / 2, top: y - size.h });
         else el.style.transform = `translate(${x}px,${y}px) translate(-50%,-100%)`;
       }
     }
@@ -405,15 +401,18 @@ export class Engine {
     }
     labels.sort((a, c) => a.top - c.top);
     const ease = this.opts.reducedMotion ? 1 : Math.min(1, dt * 10);
-    // Narrow screens (same breakpoint as the CSS): a label that would drift further than its own
-    // height from its object collapses to its diamond instead; the nav menu still lists every section.
+    // Narrow screens (same breakpoint as the CSS) are crowded: besides the slots next to obstacles,
+    // search a grid of offsets around the anchor so every label finds a free place and stays visible.
     const narrow = w <= 900;
+    const h = window.innerHeight;
+    const minTop = Math.max(edge, parseFloat(document.documentElement.style.getPropertyValue("--bar-h")) || 0);
     for (const l of labels) {
       const clamp = (x: number) => Math.min(Math.max(x, edge), w - edge - l.w);
       const baseLeft = clamp(l.left),
         baseTop = l.top;
       const clear = (left: number, top: number) =>
-        top >= edge &&
+        top >= minTop &&
+        top + l.h <= h - edge &&
         !obstacles.some(
           (r) =>
             left < r.left + r.w + gap &&
@@ -422,34 +421,27 @@ export class Engine {
             r.top < top + l.h + gap,
         );
       let left = baseLeft,
-        top = baseTop,
-        dist = 0;
+        top = baseTop;
       if (!clear(left, top)) {
-        // Nearest free slot next to any obstacle; stay put if there is none.
-        dist = Infinity;
+        // Nearest free slot; stay put if there is none.
+        const slots: [number, number][] = [];
         for (const r of obstacles) {
-          const slots: [number, number][] = [
+          slots.push(
             [baseLeft, r.top - l.h - gap - 1], // above
             [baseLeft, r.top + r.h + gap + 1], // below
             [clamp(r.left - l.w - gap - 1), baseTop], // left of
             [clamp(r.left + r.w + gap + 1), baseTop], // right of
-          ];
-          for (const [cl, ct] of slots) {
-            const d = Math.hypot(cl - baseLeft, ct - baseTop);
-            if (d < dist && clear(cl, ct)) [left, top, dist] = [cl, ct, d];
-          }
+          );
         }
-      }
-      const mini = narrow && dist > l.h;
-      l.el.classList.toggle("mini", mini);
-      if (mini) {
-        const m = this.miniSizes.get(l.el) ?? { w: 25, h: 25 }; // diamond + padding, until measured
-        const ml = Math.min(Math.max(l.ax - m.w / 2, edge), w - edge - m.w),
-          mt = l.ay - m.h;
-        obstacles.push({ left: ml, top: mt, w: m.w, h: m.h });
-        this.labelOffset.set(l.el, { x: 0, y: 0 });
-        l.el.style.transform = `translate(${ml}px,${mt}px)`;
-        continue;
+        if (narrow) {
+          for (let ky = -6; ky <= 6; ky++)
+            for (let kx = -2; kx <= 2; kx++) slots.push([clamp(baseLeft + (kx * l.w) / 2), baseTop + ky * (l.h + gap)]);
+        }
+        let dist = Infinity;
+        for (const [cl, ct] of slots) {
+          const d = Math.hypot(cl - baseLeft, ct - baseTop);
+          if (d < dist && clear(cl, ct)) [left, top, dist] = [cl, ct, d];
+        }
       }
       obstacles.push({ left, top, w: l.w, h: l.h });
       // Ease only the collision offset; the base position tracks the anchor exactly.
@@ -474,7 +466,7 @@ export class Engine {
 }
 
 type Rect = { left: number; top: number; w: number; h: number };
-type Label = Rect & { el: HTMLElement; ax: number; ay: number };
+type Label = Rect & { el: HTMLElement };
 
 /** Dispose every geometry, material and texture reachable from the scene. */
 function disposeScene(scene: THREE.Scene) {

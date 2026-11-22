@@ -422,10 +422,6 @@ body.entered #hotspots {
     transform: scaleX(1);
   }
 }
-/* collapsed to its diamond when the full label would have to drift away from its object (narrow screens) */
-.hs.mini .tag {
-  display: none;
-}
 body.panel-open .hs {
   opacity: 0;
   pointer-events: none;
