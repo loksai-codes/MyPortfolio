@@ -66,6 +66,11 @@ export class Engine {
   private lang = "en";
   private tmp = new THREE.Vector3();
   private disposed = false;
+  private sizer: ResizeObserver | null = null;
+  private sizes = new WeakMap<Element, { w: number; h: number }>();
+  private bubbleAt = { x: 0, y: 0 };
+  private labelOffset = new WeakMap<Element, { x: number; y: number }>();
+  private miniSizes = new WeakMap<Element, { w: number; h: number }>();
 
   constructor(
     private canvas: HTMLCanvasElement,
@@ -195,6 +200,21 @@ export class Engine {
     if (o.hotspots) this.hotspots = o.hotspots;
     if (o.bubble !== undefined) this.bubble = o.bubble;
     this.kit.interactive.forEach((it) => (it.el = this.hotspots.get(it.key)));
+    // Label sizes for the overlap layout, kept current without reading layout every frame.
+    if (!this.sizer && typeof ResizeObserver !== "undefined") {
+      this.sizer = new ResizeObserver((entries) => {
+        for (const e of entries) {
+          const b = e.borderBoxSize?.[0];
+          const el = e.target as HTMLElement;
+          const size = b ? { w: b.inlineSize, h: b.blockSize } : { w: el.offsetWidth, h: el.offsetHeight };
+          // Collapsed labels are measured separately so the full size stays known for the layout decision.
+          (el.classList.contains("mini") ? this.miniSizes : this.sizes).set(el, size);
+        }
+      });
+      this.disposers.push(() => this.sizer?.disconnect());
+    }
+    this.hotspots.forEach((el) => this.sizer?.observe(el));
+    if (this.bubble) this.sizer?.observe(this.bubble);
   }
 
   /** Renderer counters (for perf/leak checks). */
@@ -327,6 +347,7 @@ export class Engine {
   private updateInteractive(dt: number) {
     const w = window.innerWidth,
       h = window.innerHeight;
+    const labels: Label[] = [];
     for (const it of this.kit.interactive) {
       const target = this.hovered === it ? 1 : 0;
       it.glow += (target - it.glow) * Math.min(1, dt * 8);
@@ -350,8 +371,93 @@ export class Engine {
         this.tmp.copy(it.anchor).project(this.camera);
         const vis = this.tmp.z < 1 && Math.abs(this.tmp.x) < 1.1 && Math.abs(this.tmp.y) < 1.1;
         el.style.display = vis ? "" : "none";
-        el.style.transform = `translate(${(this.tmp.x * 0.5 + 0.5) * w}px,${(-this.tmp.y * 0.5 + 0.5) * h}px) translate(-50%,-100%)`;
+        const x = (this.tmp.x * 0.5 + 0.5) * w,
+          y = (-this.tmp.y * 0.5 + 0.5) * h;
+        const size = this.sizes.get(el);
+        if (vis && size && size.w > 0)
+          labels.push({ el, w: size.w, h: size.h, left: x - size.w / 2, top: y - size.h, ax: x, ay: y });
+        else el.style.transform = `translate(${x}px,${y}px) translate(-50%,-100%)`;
       }
+    }
+    this.layoutLabels(labels, w, dt);
+  }
+
+  /**
+   * Keep hotspot labels on screen and out of each other's (and Ren's bubble's) way.
+   * Labels start centred above their anchor; one that overlaps moves to the nearest free slot
+   * above, below or beside an obstacle. The anchor is followed exactly every frame; only the
+   * collision offset eases in and out (instantly under reduced motion), so labels glide rather than jump.
+   */
+  private layoutLabels(labels: Label[], w: number, dt: number) {
+    const edge = 8,
+      gap = 4;
+    const obstacles: Rect[] = [];
+    const b = this.bubble;
+    const bs = b && this.sizes.get(b);
+    if (b && bs && b.classList.contains("show") && !b.classList.contains("dock")) {
+      // #bubble is translate(-50%,-100%) from its left/top, plus a 6px tail below.
+      obstacles.push({
+        left: this.bubbleAt.x - bs.w / 2,
+        top: this.bubbleAt.y - bs.h,
+        w: bs.w,
+        h: bs.h + 6,
+      });
+    }
+    labels.sort((a, c) => a.top - c.top);
+    const ease = this.opts.reducedMotion ? 1 : Math.min(1, dt * 10);
+    // Narrow screens (same breakpoint as the CSS): a label that would drift further than its own
+    // height from its object collapses to its diamond instead; the nav menu still lists every section.
+    const narrow = w <= 900;
+    for (const l of labels) {
+      const clamp = (x: number) => Math.min(Math.max(x, edge), w - edge - l.w);
+      const baseLeft = clamp(l.left),
+        baseTop = l.top;
+      const clear = (left: number, top: number) =>
+        top >= edge &&
+        !obstacles.some(
+          (r) =>
+            left < r.left + r.w + gap &&
+            r.left < left + l.w + gap &&
+            top < r.top + r.h + gap &&
+            r.top < top + l.h + gap,
+        );
+      let left = baseLeft,
+        top = baseTop,
+        dist = 0;
+      if (!clear(left, top)) {
+        // Nearest free slot next to any obstacle; stay put if there is none.
+        dist = Infinity;
+        for (const r of obstacles) {
+          const slots: [number, number][] = [
+            [baseLeft, r.top - l.h - gap - 1], // above
+            [baseLeft, r.top + r.h + gap + 1], // below
+            [clamp(r.left - l.w - gap - 1), baseTop], // left of
+            [clamp(r.left + r.w + gap + 1), baseTop], // right of
+          ];
+          for (const [cl, ct] of slots) {
+            const d = Math.hypot(cl - baseLeft, ct - baseTop);
+            if (d < dist && clear(cl, ct)) [left, top, dist] = [cl, ct, d];
+          }
+        }
+      }
+      const mini = narrow && dist > l.h;
+      l.el.classList.toggle("mini", mini);
+      if (mini) {
+        const m = this.miniSizes.get(l.el) ?? { w: 25, h: 25 }; // diamond + padding, until measured
+        const ml = Math.min(Math.max(l.ax - m.w / 2, edge), w - edge - m.w),
+          mt = l.ay - m.h;
+        obstacles.push({ left: ml, top: mt, w: m.w, h: m.h });
+        this.labelOffset.set(l.el, { x: 0, y: 0 });
+        l.el.style.transform = `translate(${ml}px,${mt}px)`;
+        continue;
+      }
+      obstacles.push({ left, top, w: l.w, h: l.h });
+      // Ease only the collision offset; the base position tracks the anchor exactly.
+      const off = this.labelOffset.get(l.el) ?? { x: 0, y: 0 };
+      off.x += (left - baseLeft - off.x) * ease;
+      off.y += (top - baseTop - off.y) * ease;
+      this.labelOffset.set(l.el, off);
+      l.el.style.transform = `translate(${baseLeft + off.x}px,${baseTop + off.y}px)`;
     }
   }
 
@@ -360,10 +466,15 @@ export class Engine {
     const b = this.bubble;
     if (!b || this.focused) return;
     this.tmp.set(1.05, 1.12 + this.ren.hopLift * 0.22, 0.95).project(this.camera);
-    b.style.left = (this.tmp.x * 0.5 + 0.5) * window.innerWidth + "px";
-    b.style.top = (-this.tmp.y * 0.5 + 0.5) * window.innerHeight + "px";
+    this.bubbleAt.x = (this.tmp.x * 0.5 + 0.5) * window.innerWidth;
+    this.bubbleAt.y = (-this.tmp.y * 0.5 + 0.5) * window.innerHeight;
+    b.style.left = this.bubbleAt.x + "px";
+    b.style.top = this.bubbleAt.y + "px";
   }
 }
+
+type Rect = { left: number; top: number; w: number; h: number };
+type Label = Rect & { el: HTMLElement; ax: number; ay: number };
 
 /** Dispose every geometry, material and texture reachable from the scene. */
 function disposeScene(scene: THREE.Scene) {

@@ -49,7 +49,7 @@
   max-width: 620px;
 }
 .intro-ui .k {
-  font-size: 12px;
+  font-size: var(--text-xs);
   letter-spacing: 0.55em;
   color: var(--sakura);
   opacity: 0;
@@ -60,7 +60,7 @@
   font-weight: 600;
   font-size: clamp(56px, 8.5vw, 128px);
   line-height: 0.88;
-  margin: 22px 0 14px;
+  margin: var(--space-5) 0 var(--space-3);
   letter-spacing: -0.01em;
 }
 .intro-ui h2 .w {
@@ -104,7 +104,7 @@
   width: 0;
   height: 1px;
   background: linear-gradient(90deg, var(--gold), transparent);
-  margin: 30px 0 20px;
+  margin: var(--space-8) 0 var(--space-5);
   animation: grow 1.4s var(--ease) 1.9s forwards;
 }
 @keyframes grow {
@@ -113,7 +113,7 @@
   }
 }
 .intro-ui .ro {
-  font-size: 12px;
+  font-size: var(--text-xs);
   letter-spacing: 0.42em;
   opacity: 0;
   animation: up 1.2s 2.1s forwards;
@@ -121,23 +121,27 @@
 .intro-ui .ro i {
   color: var(--gold);
   font-style: normal;
-  margin: 0 8px;
+  margin: 0 var(--space-2);
 }
 .intro-btns {
   display: flex;
-  gap: 14px;
-  margin-top: 46px;
+  gap: var(--space-3);
+  margin-top: var(--space-12);
   opacity: 0;
   animation: up 1.2s 2.4s forwards;
   flex-wrap: wrap;
 }
 .intro-btns button {
-  padding: 16px 30px;
+  padding: var(--space-4) var(--space-8);
   border-radius: 999px;
-  font-size: 12px;
+  font-size: var(--text-xs);
   letter-spacing: 0.32em;
-  transition: 0.4s var(--ease);
-  border: 1px solid rgba(242, 232, 213, 0.35);
+  transition:
+    background-color var(--dur-slow) var(--ease),
+    border-color var(--dur-slow) var(--ease),
+    color var(--dur-slow) var(--ease),
+    letter-spacing var(--dur-slow) var(--ease);
+  border: 1px solid rgba(var(--washi-rgb), 0.35);
 }
 .intro-btns button.main {
   background: var(--washi);
@@ -145,14 +149,18 @@
   font-weight: 700;
   border-color: var(--washi);
 }
-.intro-btns button.main:hover {
-  background: var(--gold2);
-  border-color: var(--gold2);
-  letter-spacing: 0.38em;
+@media (hover: hover) {
+  .intro-btns button.main:hover {
+    background: var(--gold2);
+    border-color: var(--gold2);
+    letter-spacing: 0.38em;
+  }
 }
-.intro-btns button:not(.main):hover {
-  border-color: var(--gold2);
-  color: var(--gold2);
+@media (hover: hover) {
+  .intro-btns button:not(.main):hover {
+    border-color: var(--gold2);
+    color: var(--gold2);
+  }
 }
 .intro-top {
   position: absolute;
@@ -162,7 +170,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 11px;
+  font-size: var(--text-2xs);
   letter-spacing: 0.42em;
   opacity: 0;
   animation: up 1.2s 0.3s forwards;
@@ -171,17 +179,17 @@
   position: absolute;
   left: 8vw;
   bottom: 32px;
-  font-size: 10.5px;
+  font-size: var(--text-2xs);
   letter-spacing: 0.42em;
   opacity: 0;
   animation: up 1.2s 2.8s forwards;
-  color: #b8afc7;
+  color: var(--intro-muted);
 }
 #loadmsg {
   position: absolute;
   right: 8vw;
   bottom: 32px;
-  font-size: 10.5px;
+  font-size: var(--text-2xs);
   letter-spacing: 0.3em;
-  color: #b8afc7;
+  color: var(--intro-muted);
 }

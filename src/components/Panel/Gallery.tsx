@@ -21,6 +21,26 @@ export function Gallery() {
     switched.current = false;
     tabsRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
   }, [tabKey]);
+  // ARIA tabs pattern: one Tab stop for the group; arrows / Home / End move and select.
+  const onTabKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const keys = gallery.tabs.map((x) => x.key);
+    const i = keys.indexOf(tab.key);
+    const n = keys.length;
+    const next =
+      e.key === "ArrowRight"
+        ? (i + 1) % n
+        : e.key === "ArrowLeft"
+          ? (i - 1 + n) % n
+          : e.key === "Home"
+            ? 0
+            : e.key === "End"
+              ? n - 1
+              : -1;
+    if (next < 0) return;
+    e.preventDefault();
+    setTab(keys[next]!);
+    tabsRef.current?.querySelector<HTMLButtonElement>(`#gtab-${keys[next]}`)?.focus();
+  };
   return (
     <>
       <PanelHeader head={gallery} />
@@ -34,15 +54,17 @@ export function Gallery() {
       </div>
       <h3>{t(gallery.featureHeading)}</h3>
       <p>{t(gallery.featureText)}</p>
-      <div className="gtabs" role="tablist" ref={tabsRef}>
+      <div className="gtabs" role="tablist" ref={tabsRef} onKeyDown={onTabKey}>
         {gallery.tabs.map((x) => (
           <button
             type="button"
             role="tab"
             key={x.key}
+            id={`gtab-${x.key}`}
             data-tab={x.key}
             aria-selected={x.key === tab.key}
             aria-controls="gallery-grid"
+            tabIndex={x.key === tab.key ? 0 : -1}
             className={x.key === tab.key ? "on" : undefined}
             onClick={() => {
               switched.current = true;
@@ -55,7 +77,7 @@ export function Gallery() {
           </button>
         ))}
       </div>
-      <div className="ggrid" id="gallery-grid" role="tabpanel">
+      <div className="ggrid" id="gallery-grid" role="tabpanel" aria-labelledby={`gtab-${tab.key}`}>
         {tab.items.map((it) => {
           const src = assetUrl(it.src);
           const caption = t(it.caption);

@@ -2,16 +2,16 @@
 /* mobile */
 @media (max-width: 900px) {
   #bar {
-    padding: 16px 18px;
+    padding: var(--space-4) var(--space-5);
   }
   nav#nav {
     position: fixed;
     top: 68px;
     right: 14px;
     flex-direction: column;
-    background: rgba(12, 14, 34, 0.95);
-    border: 1px solid rgba(217, 180, 106, 0.3);
-    padding: 8px;
+    background: rgba(var(--night-rgb), 0.95);
+    border: 1px solid rgba(var(--gold-rgb), 0.3);
+    padding: var(--space-2);
     display: none;
     margin: 0;
   }
@@ -20,7 +20,7 @@
   }
   nav#nav button {
     text-align: left;
-    padding: 11px 16px;
+    padding: var(--space-3) var(--space-4);
   }
   #menuBtn {
     display: grid;
@@ -28,10 +28,13 @@
   }
   .tools {
     margin-left: auto;
-    gap: 10px;
+    gap: var(--space-2);
   }
   .snd span.t {
     display: none;
+  }
+  .snd .ico {
+    display: block;
   }
   .brand small {
     display: none;
@@ -49,7 +52,7 @@
     display: none;
   }
   #panel .body {
-    padding: 30px 22px 50px;
+    padding: var(--space-8) var(--space-6) var(--space-12);
   }
   #close {
     top: 30px;
@@ -68,7 +71,10 @@
     display: none;
   }
   .hs .tag {
-    font-size: 11px;
+    font-size: var(--text-2xs);
+  }
+  .hs .tag-obj {
+    display: none; /* "Shelf · Side Quests" → "Side Quests" on narrow screens */
   }
   .intro-ui {
     left: 7vw;
@@ -78,7 +84,7 @@
     transform: none;
   }
   .intro-btns button {
-    padding: 14px 22px;
+    padding: var(--space-4) var(--space-6);
   }
   .intro-top > span:first-child {
     display: none;
@@ -90,6 +96,56 @@
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01s !important;
+    /* run once and rest on the final frame; infinite loops at 0.01s would flicker */
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01s !important;
+  }
+}
+
+/* touch: comfortable targets and a pressed state (hover styles only exist on hover devices) */
+@media (pointer: coarse) {
+  .snd,
+  .lang button,
+  #close,
+  #menuBtn,
+  .gtabs button {
+    min-height: var(--tap-min);
+  }
+  .snd,
+  #close,
+  #menuBtn {
+    min-width: var(--tap-min);
+    justify-content: center;
+  }
+}
+@media (hover: none) {
+  .btn:active,
+  #close:active,
+  .contact a.row:active,
+  .btn.ghost:active {
+    background: var(--ink);
+    color: var(--washi);
+  }
+  .btn:not(.ghost):active {
+    background: var(--shu);
+  }
+  .gtabs button:active {
+    background: var(--ink);
+    color: var(--gold2);
+    border-color: var(--ink);
+  }
+  nav#nav button:active {
+    opacity: 1;
+  }
+  .hs:active .tag {
+    color: var(--gold2);
+  }
+  .intro-btns button:active {
+    border-color: var(--gold2);
+    color: var(--gold2);
+  }
+  .intro-btns button.main:active {
+    background: var(--gold2);
+    color: var(--ink);
   }
 }

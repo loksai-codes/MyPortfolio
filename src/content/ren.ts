@@ -13,8 +13,8 @@ export const renPanel: PanelHead & { text: L10n; portraitName: string } = {
 
 /** Said once after the doors open. */
 export const REN_HELLO: L10n = {
-  en: "Hi! I'm Ren. Welcome to Loksai's room! Click anything to explore.",
-  ja: "こんにちは！レンだよ。ロクサイの部屋へようこそ！なんでもクリックしてみてね。",
+  en: "Hi! I'm Ren. Welcome to Loksai's room! Pick anything to explore.",
+  ja: "こんにちは！レンだよ。ロクサイの部屋へようこそ！気になる物を選んでみてね。",
 };
 
 /** Cycled when Ren is petted. */
@@ -27,7 +27,7 @@ export const REN_LINES: L10nList = {
     "Graphs everywhere!",
     "Loksai says hi from the desk.",
     "I keep the lanterns lit ✨",
-    "Click the scroll to learn about him!",
+    "Try the scroll to learn about him!",
   ],
   ja: [
     "こんにちは！レンだよ！",
@@ -37,7 +37,7 @@ export const REN_LINES: L10nList = {
     "どこもかしこもグラフ！",
     "ロクサイは机にいるよ。",
     "提灯はぼくが守ってる ✨",
-    "掛け軸をクリックしてみて！",
+    "掛け軸を選んでみて！",
   ],
 };
 

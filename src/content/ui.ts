@@ -8,10 +8,10 @@ export const ui = {
   introTop: { en: "月夜 · LOKSAI PALYAM", ja: "月夜 · LOKSAI PALYAM" },
   introBot: { en: "♪ KOTO · BEST WITH SOUND", ja: "♪ 箏の音とともにどうぞ" },
   heroLine: {
-    en: "AI backends, knowledge graphs and the stories that explain them. Pull up a cushion — click anything in the room.",
-    ja: "AIバックエンド、ナレッジグラフ、そしてそれを伝える物語。座布団にどうぞ — 部屋の物をクリックしてください。",
+    en: "AI backends, knowledge graphs and the stories that explain them. Pull up a cushion — pick anything in the room.",
+    ja: "AIバックエンド、ナレッジグラフ、そしてそれを伝える物語。座布団にどうぞ — 部屋の物を選んでください。",
   },
-  hint: { en: "Click objects in the room to explore", ja: "部屋の物をクリックして探索" },
+  hint: { en: "Pick an object in the room to explore", ja: "部屋の物を選んで探索" },
   introTitle: { en: "Welcome to Loksai's room", ja: "ロクサイの部屋へようこそ" },
   introSub: {
     en: "A small washitsu of projects, paths and one purple companion",
@@ -30,9 +30,10 @@ export const ui = {
   voiceOff: { en: "Ren's voice: off", ja: "レンの声：オフ" },
   voiceTest: { en: "Can you hear me now?", ja: "ぼくの声、聞こえる？" },
   liveDemo: { en: "Live demo", ja: "ライブデモ" },
-  sound: { en: "KOTO", ja: "KOTO" },
+  sound: { en: "SOUND", ja: "音" },
   // accessibility labels
-  aMusic: { en: "Music", ja: "音楽" },
+  // starts with the visible label ("SOUND" / "音") so voice control can target it (WCAG 2.5.3)
+  aMusic: { en: "Sound: koto music", ja: "音：箏の音楽" },
   aMenu: { en: "Menu", ja: "メニュー" },
   aSections: { en: "Sections", ja: "セクション" },
   aLanguage: { en: "Language", ja: "言語" },

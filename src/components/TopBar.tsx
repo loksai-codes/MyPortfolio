@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef } from "react";
 import { profile, sections, ui } from "@/content";
 import { useApp } from "@/store/useApp";
 import { closeSection, openSection } from "./actions";
@@ -15,8 +16,21 @@ export function TopBar() {
   const entered = useApp((s) => s.entered);
   const t = useT();
   const other = lang === "en" ? "ja" : "en";
+  const bar = useRef<HTMLElement>(null);
+  // The nav wraps below ~1366px, so publish the real bar height for the panel to start under it.
+  useEffect(() => {
+    const el = bar.current;
+    if (!el) return;
+    const root = document.documentElement.style;
+    const ro = new ResizeObserver(() => root.setProperty("--bar-h", `${el.offsetHeight}px`));
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      root.removeProperty("--bar-h");
+    };
+  }, []);
   return (
-    <header id="bar" inert={!entered}>
+    <header id="bar" ref={bar} inert={!entered}>
       <a
         className="brand"
         href="#"
@@ -64,7 +78,9 @@ export function TopBar() {
           aria-controls="nav"
           onClick={() => setMenu(!menuOpen)}
         >
-          ☰
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+            <path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" strokeWidth="1.3" />
+          </svg>
         </button>
       </div>
     </header>
