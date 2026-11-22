@@ -26,6 +26,7 @@ export const ui = {
   copy: { en: "Copy email", ja: "メールをコピー" },
   petRen: { en: "Pet Ren", ja: "レンをなでる" },
   close: { en: "Close", ja: "閉じる" },
+  closeImage: { en: "Close image", ja: "画像を閉じる" },
   voiceOn: { en: "Ren's voice: on", ja: "レンの声：オン" },
   voiceOff: { en: "Ren's voice: off", ja: "レンの声：オフ" },
   voiceTest: { en: "Can you hear me now?", ja: "ぼくの声、聞こえる？" },

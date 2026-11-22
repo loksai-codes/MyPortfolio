@@ -684,6 +684,42 @@ html[lang="ja"] .qt {
 #lightbox.show {
   display: grid;
 }
+/* same round hairline control as the panel's #close, inverted for the dark backdrop */
+#lightbox .lb-close {
+  position: absolute;
+  top: var(--space-6);
+  right: var(--space-6);
+  width: var(--tap-min);
+  height: var(--tap-min);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--washi-rgb), 0.35);
+  color: var(--washi);
+  transition:
+    background-color var(--dur),
+    color var(--dur),
+    transform var(--dur);
+}
+@media (hover: hover) {
+  #lightbox .lb-close:hover {
+    background: var(--washi);
+    color: var(--ink);
+    transform: rotate(90deg);
+  }
+}
+#lightbox .lb-close:active {
+  background: var(--washi);
+  color: var(--ink);
+}
+#lightbox .lb-close:focus-visible {
+  outline: 2px solid var(--gold2);
+  outline-offset: 3px;
+}
+/* scroll lock: nothing behind the modal scrolls while it is open */
+body.lb-open #panel .body {
+  overflow: hidden;
+}
 #lightbox img {
   max-width: min(1000px, 92vw);
   max-height: 78vh;
