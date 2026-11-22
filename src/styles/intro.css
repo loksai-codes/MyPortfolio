@@ -4,7 +4,7 @@
   position: fixed;
   inset: 0;
   z-index: 50;
-  background: #070920;
+  background: rgb(var(--intro-rgb));
   overflow: hidden;
   transition:
     opacity 1.6s ease,
@@ -192,4 +192,21 @@
   font-size: var(--text-2xs);
   letter-spacing: 0.3em;
   color: var(--intro-muted);
+}
+
+/* intro language toggle: guaranteed backdrop, whatever the artwork behind it */
+.intro-top .lang {
+  background: var(--pill-backdrop);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(var(--gold-rgb), 0.5);
+  border-radius: 999px;
+  padding: 0 var(--space-2);
+}
+.intro-top .lang button {
+  opacity: 0.8; /* off state: ≥4.6:1 on the pill over white art */
+}
+.intro-top .lang button.on {
+  opacity: 1;
+  color: var(--gold2); /* ≥5.6:1 on the pill over white art */
 }

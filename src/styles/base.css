@@ -22,6 +22,9 @@
   --scroll-edge: #b89a5a; /* gilt edge of the hanging scroll */
   --paper-sheet: linear-gradient(180deg, #f7f0e1, #efe4cc);
   --intro-muted: #b8afc7;
+  --intro-rgb: 7, 9, 32; /* intro night sky */
+  /* intro language pill: 0.7 (not 0.55) so both states hold ≥4.5:1 even over the white moon / blossoms */
+  --pill-backdrop: rgba(var(--intro-rgb), 0.7);
   --bubble-bg: rgba(var(--paper-rgb), 0.96);
   --label-backing: rgba(var(--night-rgb), 0.65);
   --radius-sm: 2px;
