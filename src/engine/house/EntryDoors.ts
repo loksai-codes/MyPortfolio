@@ -9,7 +9,7 @@ export interface EntryDoors {
   open(instant?: boolean): void;
 }
 
-/** Front frame, veranda, stone lantern, moss mounds and the four closed entry shoji (one shows Ren's shadow). */
+/** Front frame, veranda, entry step and the four closed entry shoji (one shows Ren's shadow). */
 export function buildEntryDoors(k: Kit): EntryDoors {
   const { W, H } = ROOM;
   const { M, box, mesh, scene, std, glowSprite, T } = k;
@@ -17,7 +17,7 @@ export function buildEntryDoors(k: Kit): EntryDoors {
   [-3.02, 3.02].forEach((x) => box(0.12, H, 0.12, M.wood, x, H / 2, 2.5));
   box(W + 0.3, 0.12, 0.14, M.wood, 0, 1.92, 2.5);
   box(W + 0.3, 0.1, 0.16, M.dark, 0, H - 0.02, 2.5);
-  // engawa veranda + stepping stone + front lantern
+  // engawa veranda + entry stepping stone
   box(W + 2, 0.08, 1.0, M.wood, 0, -0.02, 3.05, scene, false);
   for (let x = -3.9; x <= 3.9; x += 0.18) box(0.01, 0.081, 1.0, M.black, x, -0.02, 3.05, scene, false);
   const st = mesh(
@@ -28,36 +28,6 @@ export function buildEntryDoors(k: Kit): EntryDoors {
     3.9,
   );
   st.scale.z = 0.6;
-  const fl = new THREE.Group();
-  fl.position.set(-3.9, -0.35, 4.6);
-  scene.add(fl);
-  const sm = std({ color: 0x6e6a62, roughness: 0.95 });
-  mesh(new THREE.CylinderGeometry(0.3, 0.34, 0.12, 6), sm, 0, 0.06, 0, fl);
-  mesh(new THREE.CylinderGeometry(0.08, 0.1, 0.6, 8), sm, 0, 0.42, 0, fl);
-  mesh(new THREE.CylinderGeometry(0.26, 0.22, 0.1, 6), sm, 0, 0.76, 0, fl);
-  mesh(
-    new THREE.BoxGeometry(0.28, 0.24, 0.28),
-    std({ color: 0x221a10, emissive: 0xffb050, emissiveIntensity: 1.1 }),
-    0,
-    0.93,
-    0,
-    fl,
-  );
-  mesh(new THREE.ConeGeometry(0.4, 0.26, 6), sm, 0, 1.18, 0, fl);
-  fl.add(glowSprite(0xffa850, 1.3, new THREE.Vector3(0, 0.93, 0), 0.6));
-  // moss mounds
-  const moss = std({ color: 0x24331d, roughness: 1 });
-  (
-    [
-      [3.8, 4.2, 0.9],
-      [4.6, 5.6, 1.2],
-      [-4.8, 6.4, 1.1],
-      [2.6, 6.8, 0.8],
-    ] as const
-  ).forEach(([x, z, r]) => {
-    const m = mesh(new THREE.SphereGeometry(r, 16, 10), moss, x, -0.35 - r * 0.55, z, scene, false);
-    m.scale.y = 0.55;
-  });
   // entry shoji (closed) with Ren's shadow on the paper
   const lat = std({
     color: 0x2a1a10,

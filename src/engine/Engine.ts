@@ -26,13 +26,7 @@ import { tatamiTexture } from "./textures/tatami";
 import { washiTexture } from "./textures/washi";
 import { darkWoodTexture, woodTexture } from "./textures/wood";
 import type { EngineOptions, SectionKey } from "./types";
-import { buildDistant } from "./world/Distant";
-import { buildFx, type Fx } from "./world/Fx";
-import { buildGarden } from "./world/Garden";
-import { buildMountains } from "./world/Mountains";
-import { buildPetals } from "./world/Petals";
-import { buildSky } from "./world/Sky";
-import { buildSakura } from "./world/Trees";
+import { BACKDROP_FLOOR, buildBackdrop } from "./world/Backdrop";
 
 export type { EngineOptions, SectionKey } from "./types";
 
@@ -55,7 +49,6 @@ export class Engine {
   private picker: Picker;
   private ren: RenController;
   private doors: EntryDoors;
-  private fx: Fx;
   private raf = 0;
   private timers: ReturnType<typeof setTimeout>[] = [];
   private disposers: (() => void)[] = [];
@@ -85,7 +78,7 @@ export class Engine {
     r.shadowMap.enabled = true;
     r.shadowMap.type = THREE.PCFShadowMap;
     r.shadowMap.autoUpdate = false;
-    this.scene.fog = new THREE.Fog(0x221d42, 14, 62);
+    this.scene.fog = new THREE.Fog(BACKDROP_FLOOR, 16, 60);
     this.rig = new CameraRig(
       this.camera,
       () => ({ w: window.innerWidth, h: window.innerHeight }),
@@ -127,20 +120,13 @@ export class Engine {
     buildShelf(k);
     buildLanterns(k, lanternTex);
     this.ren = buildRen(k);
-    buildSky(k);
-    buildMountains(k);
-    buildDistant(k);
+    buildBackdrop(k);
     buildRoof(k);
     buildFoundation(k);
-    buildGarden(k);
-    buildSakura(k);
-    buildSakura(k, 6.4, 2.6, 0.85);
-    buildPetals(k);
-    this.fx = buildFx(k, r.getPixelRatio());
     this.doors = buildEntryDoors(k);
     r.shadowMap.needsUpdate = true;
     // Compile every shader program up front (in parallel where KHR_parallel_shader_compile exists) so the
-    // first view of the garden doesn't stall the main thread mid-sequence.
+    // first view of the room doesn't stall the main thread mid-sequence.
     this.ready = r.compileAsync(this.scene, this.camera).catch(() => undefined);
 
     this.picker = new Picker(canvas, this.camera, k.interactive);
@@ -251,23 +237,23 @@ export class Engine {
 
   private buildLights() {
     const s = this.scene;
-    s.add(new THREE.HemisphereLight(0x5a6aa8, 0x2a1a10, legacyIntensity(0.4) * INDIRECT_COMPENSATION));
-    s.add(new THREE.AmbientLight(0x3a3050, legacyIntensity(0.22) * INDIRECT_COMPENSATION));
-    const moonL = new THREE.DirectionalLight(0xaebcff, legacyIntensity(0.9));
-    moonL.position.set(-2.5, 6, -9);
-    moonL.target.position.set(0.3, 0, 0);
-    moonL.castShadow = true;
-    moonL.shadow.mapSize.set(2048, 2048);
-    const c = moonL.shadow.camera;
+    s.add(new THREE.HemisphereLight(0x8a7464, 0x2a1a10, legacyIntensity(0.4) * INDIRECT_COMPENSATION));
+    s.add(new THREE.AmbientLight(0x3d3230, legacyIntensity(0.22) * INDIRECT_COMPENSATION));
+    const keyL = new THREE.DirectionalLight(0xffe4c8, legacyIntensity(0.9));
+    keyL.position.set(-2.5, 6, -9);
+    keyL.target.position.set(0.3, 0, 0);
+    keyL.castShadow = true;
+    keyL.shadow.mapSize.set(2048, 2048);
+    const c = keyL.shadow.camera;
     c.left = -7;
     c.right = 7;
     c.top = 7;
     c.bottom = -7;
     c.near = 1;
     c.far = 25;
-    moonL.shadow.bias = -0.0008;
-    moonL.shadow.radius = 1;
-    s.add(moonL, moonL.target);
+    keyL.shadow.bias = -0.0008;
+    keyL.shadow.radius = 1;
+    s.add(keyL, keyL.target);
   }
 
   private bindInput() {
@@ -332,7 +318,6 @@ export class Engine {
     const pr = this.renderer.getPixelRatio();
     if (avg > 1 / 42 && pr > 1) {
       this.renderer.setPixelRatio(Math.max(1, pr - 0.5));
-      this.fx.materials.forEach((m) => (m.uniforms.pr.value = this.renderer.getPixelRatio()));
       this.resize();
     }
     p.n = 0;
