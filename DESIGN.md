@@ -7,26 +7,27 @@ the scene, never as app chrome. Tokens live in `src/styles/base.css` `:root`.
 
 ## 1. Colour
 
-| Token                           | Value               | Role                                                                   |
-| ------------------------------- | ------------------- | ---------------------------------------------------------------------- |
-| `--night`                       | `#0c0e22`           | page / scene background, theme colour                                  |
-| `--ink`                         | `#141117`           | text on paper, dark chips, primary button                              |
-| `--ink-muted`                   | `#645f5c`           | secondary text on paper (≥4.9:1 on the darkest sheet tone)             |
-| `--washi`                       | `#f2e8d5`           | text on night and on the scene                                         |
-| `--paper`                       | `#f4ecdc`           | paper fills (timeline markers, quest kanji)                            |
-| `--shu`                         | `#b8382c`           | seal, kickers, subtitles, rules, button hover (4.8:1 on paper)         |
-| `--gold`                        | `#d9b46a`           | hairlines, underlines, diamonds (decorative only, never text on paper) |
-| `--gold2`                       | `#f3dc9c`           | active / hover text on dark, cursor, stats numbers                     |
-| `--sakura`                      | `#f0b8c8`           | kicker lines over the scene (hero, intro)                              |
-| `--ren`                         | `#a58bd8`           | Ren's badge only                                                       |
-| `--tile-bg` / `--tile-bg-hover` | white 55% / white   | panel tiles                                                            |
-| `--label-halo`                  | layered dark shadow | hotspot labels over the bright scene                                   |
-| `--label-backing`               | night 65%           | behind hotspot label text: ≥4.9:1 even over white shoji glare          |
-| `--line-strong`                 | ink 50%             | borders that identify a control (ghost button): 3.4:1 on paper         |
-| `--scroll-edge`                 | `#b89a5a`           | gilt edge of the hanging scroll, scrollbar                             |
-| `--paper-sheet`                 | `#f7f0e1 → #efe4cc` | scroll sheet and text-only fallback background                         |
-| `--bubble-bg`                   | paper 96%           | Ren's speech bubble                                                    |
-| `--intro-muted`                 | `#b8afc7`           | quiet text on the intro screen                                         |
+| Token                           | Value               | Role                                                                        |
+| ------------------------------- | ------------------- | --------------------------------------------------------------------------- |
+| `--night`                       | `#0c0e22`           | page / scene background, theme colour                                       |
+| `--ink`                         | `#141117`           | text on paper, dark chips, primary button                                   |
+| `--ink-muted`                   | `#645f5c`           | secondary text on paper (≥4.9:1 on the darkest sheet tone)                  |
+| `--washi`                       | `#f2e8d5`           | text on night and on the scene                                              |
+| `--paper`                       | `#f4ecdc`           | paper fills (timeline markers, quest kanji)                                 |
+| `--shu`                         | `#b8382c`           | seal, kickers, subtitles, rules, button hover (4.8:1 on paper)              |
+| `--gold`                        | `#d9b46a`           | hairlines, underlines, diamonds (decorative only, never text on paper)      |
+| `--gold2`                       | `#f3dc9c`           | active / hover text on dark, cursor, stats numbers                          |
+| `--sakura`                      | `#f0b8c8`           | kicker lines over the scene (hero, intro)                                   |
+| `--ren`                         | `#a58bd8`           | Ren's badge only                                                            |
+| `--tile-bg` / `--tile-bg-hover` | white 55% / white   | panel tiles                                                                 |
+| `--label-halo`                  | layered dark shadow | hotspot labels over the bright scene                                        |
+| `--label-backing`               | night 65%           | behind hotspot label text: ≥4.9:1 even over white shoji glare               |
+| `--line-strong`                 | ink 50%             | borders that identify a control (ghost button): 3.4:1 on paper              |
+| `--scroll-edge`                 | `#b89a5a`           | gilt edge of the hanging scroll, scrollbar                                  |
+| `--paper-sheet`                 | `#f7f0e1 → #efe4cc` | scroll sheet and text-only fallback background                              |
+| `--bubble-bg`                   | paper 96%           | Ren's speech bubble                                                         |
+| `--intro-muted`                 | `#b8afc7`           | quiet text on the intro screen                                              |
+| `--pill-backdrop`               | intro night 70%     | intro language pill: both states ≥4.5:1 even over the white moon / blossoms |
 
 Alpha variants are written as `rgba(var(--ink-rgb), 0.1)` using the `--*-rgb` channel tokens
 (ink, night, washi, paper, gold, gold2, shade). Raw values left in the CSS are material one-offs
@@ -70,7 +71,15 @@ bubble's badge inset; each is commented.
 - Panel: `min(580px, 46vw)` wide, starts below the bar; body padding 40/40/64px.
 - Tiles: `--tile-pad` (20px), `--tile-pad-compact` (16px) in two-column grids. Static tiles only
   brighten on hover; only links (contact rows) move.
-- Breakpoint: 900px (bar collapses to a menu, panel becomes an 80%-height bottom sheet).
+- Breakpoints:
+  - ≥1366px: full bar (brand subtitle, nav with JA/EN sub-labels).
+  - 1200–1365px: compact bar (no subtitle or sub-labels, tighter nav, nothing wraps).
+  - 901–1199px: nav folds into the menu button; the dropdown hangs below the measured `--bar-h`.
+  - ≤900px: mobile bar, panel becomes an 80%-height bottom sheet.
+- Hotspot labels: always shown (short form on phones). Overlaps move to the nearest free slot,
+  never under the top bar; the move eases in about 0.3s, so labels can cross briefly while gliding.
+- Modals (lightbox): focus moves to the close button, Tab is trapped, the page behind is `inert`,
+  and focus returns to the opener on close.
 
 ## 4. Motion
 
