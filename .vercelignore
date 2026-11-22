@@ -5,3 +5,4 @@ test-results
 .next-build.log
 .next-start.log
 tsconfig.tsbuildinfo
+.env*.local
