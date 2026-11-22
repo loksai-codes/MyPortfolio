@@ -13,3 +13,6 @@ next-env.d.ts
 shots/
 .next-build.log
 .next-start.log
+
+.vercel
+.env*

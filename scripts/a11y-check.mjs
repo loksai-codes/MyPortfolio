@@ -78,3 +78,64 @@ const out = (n) => `shots/a11y/${n}.png`;
   );
   await b.close();
 }
+// 4) axe-core (WCAG 2.x A/AA rules) on each state: intro, home, open panel, lightbox, fallback.
+//    axe-core ships with eslint-plugin-jsx-a11y, so no extra dependency. Exit code 1 on serious/critical.
+{
+  const axeSrc = fs.readFileSync(new URL("../node_modules/axe-core/axe.min.js", import.meta.url), "utf8");
+  const run = async (p, label) => {
+    await p.addScriptTag({ content: axeSrc });
+    const r = await p.evaluate(() =>
+      window.axe.run(document, {
+        runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"] },
+      }),
+    );
+    const bad = r.violations.filter((v) => v.impact === "serious" || v.impact === "critical");
+    const counts = r.violations.reduce((m, v) => ((m[v.impact] = (m[v.impact] ?? 0) + 1), m), {});
+    console.log(`axe ${label}: violations ${JSON.stringify(counts)}`);
+    for (const v of r.violations)
+      console.log(
+        `  - [${v.impact}] ${v.id}: ${v.help} → ${v.nodes
+          .slice(0, 3)
+          .map((n) => n.target.join(" "))
+          .join(" | ")}`,
+      );
+    return bad.length;
+  };
+  let serious = 0;
+  const b = await chromium.launch({ args: ["--use-gl=angle", "--use-angle=d3d11"] });
+  for (const [vp, name] of [
+    [{ width: 1440, height: 860 }, "desktop"],
+    [{ width: 390, height: 844 }, "mobile"],
+  ]) {
+    const p = await (await b.newContext({ viewport: vp })).newPage();
+    await p.goto(base);
+    await p.waitForTimeout(3500); // intro fully revealed
+    serious += await run(p, `${name} intro`);
+    await p.locator("#enterQuiet").click();
+    await p.waitForFunction(() => document.body.classList.contains("entered"), null, { timeout: 20000 });
+    await p.waitForTimeout(1500);
+    serious += await run(p, `${name} home`);
+    await p.evaluate(() => (location.hash = "#gallery"));
+    await p.waitForFunction(() => document.body.classList.contains("panel-open"));
+    await p.waitForTimeout(1800);
+    serious += await run(p, `${name} gallery panel`);
+    await p.locator("#panel .ggrid figure button").first().click();
+    await p.waitForTimeout(500);
+    serious += await run(p, `${name} lightbox`);
+    await p.context().close();
+  }
+  // Fallback page (same markup as no-JS), reached via "no WebGL" so axe can run in it.
+  const fb = await (await b.newContext({ viewport: { width: 390, height: 844 } })).newPage();
+  await fb.addInitScript(() => {
+    const get = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (t, ...rest) {
+      return /webgl/.test(t) ? null : get.call(this, t, ...rest);
+    };
+  });
+  await fb.goto(base);
+  await fb.waitForFunction(() => document.documentElement.classList.contains("no-webgl"), null, { timeout: 15000 });
+  serious += await run(fb, "fallback (no WebGL)");
+  await b.close();
+  console.log(`axe total serious/critical: ${serious}`);
+  if (serious) process.exitCode = 1;
+}

@@ -9,10 +9,73 @@
   --gold2: #f3dc9c;
   --sakura: #f0b8c8;
   --ren: #a58bd8;
+  --ink-muted: #645f5c; /* secondary text on washi paper: ≥4.9:1 on the darkest sheet tone */
+  /* channels for alpha variants: rgba(var(--ink-rgb), 0.1) etc. — keep in sync with the hexes above */
+  --ink-rgb: 20, 17, 23;
+  --night-rgb: 12, 14, 34;
+  --washi-rgb: 242, 232, 213;
+  --paper-rgb: 244, 236, 220;
+  --gold-rgb: 217, 180, 106;
+  --gold2-rgb: 243, 220, 156;
+  --shade-rgb: 5, 4, 12; /* deepest scene shadow: vignette, label halo */
+  --line-strong: rgba(var(--ink-rgb), 0.5); /* UI borders that identify a control: 3.4:1 on paper */
+  --scroll-edge: #b89a5a; /* gilt edge of the hanging scroll */
+  --paper-sheet: linear-gradient(180deg, #f7f0e1, #efe4cc);
+  --intro-muted: #b8afc7;
+  --intro-rgb: 7, 9, 32; /* intro night sky */
+  /* intro language pill: 0.7 (not 0.55) so both states hold ≥4.5:1 even over the white moon / blossoms */
+  --pill-backdrop: rgba(var(--intro-rgb), 0.7);
+  --bubble-bg: rgba(var(--paper-rgb), 0.96);
+  --label-backing: rgba(var(--night-rgb), 0.65);
+  --radius-sm: 2px;
+  --tap-min: 44px; /* minimum touch target on coarse pointers */
+  --bar-h: 95px; /* desktop top bar height (≥1366px); TopBar.tsx overwrites it with the measured value */
   --disp: var(--font-cormorant), var(--font-shippori), serif;
   --serif: var(--font-shippori), "Hiragino Mincho ProN", serif;
   --sans: var(--font-zen), "Hiragino Sans", system-ui, sans-serif;
   --ease: cubic-bezier(0.77, 0, 0.18, 1);
+  --dur: 0.3s; /* hover / state changes */
+  --dur-slow: 0.4s; /* larger surfaces: tiles, toast, photos */
+
+  /* space: 4px grid (20 and 40 kept as steps: the bar, hero and panel gutters are built on them) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+
+  /* type: small sizes are 1px apart on purpose (tracked caps labels); display sizes are fluid clamps */
+  --text-3xs: 10px;
+  --text-2xs: 11px;
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-md: 14px;
+  --text-base: 15px;
+  --text-lg: 16px;
+  --text-xl: 18px;
+  --text-2xl: 22px;
+  --text-3xl: 24px;
+  --text-4xl: 30px;
+  --text-5xl: 40px;
+  --text-6xl: 48px;
+
+  /* panel tiles (projects, paths, quests, contact rows) */
+  --tile-bg: rgba(255, 255, 255, 0.55);
+  --tile-bg-hover: #fff;
+  --tile-line: 1px solid rgba(var(--ink-rgb), 0.09);
+  --tile-pad: var(--space-5);
+  --tile-pad-compact: var(--space-4); /* two-column grids */
+
+  /* hotspot labels: tight dark halo first so text holds up over lit shoji and lanterns */
+  --label-halo:
+    0 0 1px rgb(var(--shade-rgb)), 0 0 3px rgba(var(--shade-rgb), 0.9), 0 0 10px rgba(var(--shade-rgb), 0.75),
+    0 2px 10px rgba(0, 0, 0, 0.9);
 }
 * {
   box-sizing: border-box;
@@ -93,7 +156,7 @@ a {
   inset: 0;
   z-index: 6;
   pointer-events: none;
-  background: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0) 55%, rgba(5, 4, 12, 0.55) 100%);
+  background: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0) 55%, rgba(var(--shade-rgb), 0.55) 100%);
 }
 /* cursor */
 #cur,
@@ -114,7 +177,7 @@ a {
 #cur2 {
   width: 34px;
   height: 34px;
-  border: 1px solid rgba(243, 220, 156, 0.55);
+  border: 1px solid rgba(var(--gold2-rgb), 0.55);
   transition:
     width 0.35s var(--ease),
     height 0.35s var(--ease),
@@ -124,6 +187,6 @@ a {
 body.hov #cur2 {
   width: 64px;
   height: 64px;
-  background: rgba(243, 220, 156, 0.08);
+  background: rgba(var(--gold2-rgb), 0.08);
   border-color: var(--gold2);
 }

@@ -1,0 +1,8 @@
+shots
+reference
+test-results
+.next
+.next-build.log
+.next-start.log
+tsconfig.tsbuildinfo
+.env*.local

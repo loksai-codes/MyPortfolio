@@ -26,13 +26,7 @@ import { tatamiTexture } from "./textures/tatami";
 import { washiTexture } from "./textures/washi";
 import { darkWoodTexture, woodTexture } from "./textures/wood";
 import type { EngineOptions, SectionKey } from "./types";
-import { buildDistant } from "./world/Distant";
-import { buildFx, type Fx } from "./world/Fx";
-import { buildGarden } from "./world/Garden";
-import { buildMountains } from "./world/Mountains";
-import { buildPetals } from "./world/Petals";
-import { buildSky } from "./world/Sky";
-import { buildSakura } from "./world/Trees";
+import { BACKDROP_FLOOR, buildBackdrop } from "./world/Backdrop";
 
 export type { EngineOptions, SectionKey } from "./types";
 
@@ -55,7 +49,6 @@ export class Engine {
   private picker: Picker;
   private ren: RenController;
   private doors: EntryDoors;
-  private fx: Fx;
   private raf = 0;
   private timers: ReturnType<typeof setTimeout>[] = [];
   private disposers: (() => void)[] = [];
@@ -66,6 +59,10 @@ export class Engine {
   private lang = "en";
   private tmp = new THREE.Vector3();
   private disposed = false;
+  private sizer: ResizeObserver | null = null;
+  private sizes = new WeakMap<Element, { w: number; h: number }>();
+  private bubbleAt = { x: 0, y: 0 };
+  private labelOffset = new WeakMap<Element, { x: number; y: number }>();
 
   constructor(
     private canvas: HTMLCanvasElement,
@@ -81,7 +78,7 @@ export class Engine {
     r.shadowMap.enabled = true;
     r.shadowMap.type = THREE.PCFShadowMap;
     r.shadowMap.autoUpdate = false;
-    this.scene.fog = new THREE.Fog(0x221d42, 14, 62);
+    this.scene.fog = new THREE.Fog(BACKDROP_FLOOR, 16, 60);
     this.rig = new CameraRig(
       this.camera,
       () => ({ w: window.innerWidth, h: window.innerHeight }),
@@ -123,20 +120,13 @@ export class Engine {
     buildShelf(k);
     buildLanterns(k, lanternTex);
     this.ren = buildRen(k);
-    buildSky(k);
-    buildMountains(k);
-    buildDistant(k);
+    buildBackdrop(k);
     buildRoof(k);
     buildFoundation(k);
-    buildGarden(k);
-    buildSakura(k);
-    buildSakura(k, 6.4, 2.6, 0.85);
-    buildPetals(k);
-    this.fx = buildFx(k, r.getPixelRatio());
     this.doors = buildEntryDoors(k);
     r.shadowMap.needsUpdate = true;
     // Compile every shader program up front (in parallel where KHR_parallel_shader_compile exists) so the
-    // first view of the garden doesn't stall the main thread mid-sequence.
+    // first view of the room doesn't stall the main thread mid-sequence.
     this.ready = r.compileAsync(this.scene, this.camera).catch(() => undefined);
 
     this.picker = new Picker(canvas, this.camera, k.interactive);
@@ -195,6 +185,19 @@ export class Engine {
     if (o.hotspots) this.hotspots = o.hotspots;
     if (o.bubble !== undefined) this.bubble = o.bubble;
     this.kit.interactive.forEach((it) => (it.el = this.hotspots.get(it.key)));
+    // Label sizes for the overlap layout, kept current without reading layout every frame.
+    if (!this.sizer && typeof ResizeObserver !== "undefined") {
+      this.sizer = new ResizeObserver((entries) => {
+        for (const e of entries) {
+          const b = e.borderBoxSize?.[0];
+          const el = e.target as HTMLElement;
+          this.sizes.set(el, b ? { w: b.inlineSize, h: b.blockSize } : { w: el.offsetWidth, h: el.offsetHeight });
+        }
+      });
+      this.disposers.push(() => this.sizer?.disconnect());
+    }
+    this.hotspots.forEach((el) => this.sizer?.observe(el));
+    if (this.bubble) this.sizer?.observe(this.bubble);
   }
 
   /** Renderer counters (for perf/leak checks). */
@@ -234,23 +237,23 @@ export class Engine {
 
   private buildLights() {
     const s = this.scene;
-    s.add(new THREE.HemisphereLight(0x5a6aa8, 0x2a1a10, legacyIntensity(0.4) * INDIRECT_COMPENSATION));
-    s.add(new THREE.AmbientLight(0x3a3050, legacyIntensity(0.22) * INDIRECT_COMPENSATION));
-    const moonL = new THREE.DirectionalLight(0xaebcff, legacyIntensity(0.9));
-    moonL.position.set(-2.5, 6, -9);
-    moonL.target.position.set(0.3, 0, 0);
-    moonL.castShadow = true;
-    moonL.shadow.mapSize.set(2048, 2048);
-    const c = moonL.shadow.camera;
+    s.add(new THREE.HemisphereLight(0x8a7464, 0x2a1a10, legacyIntensity(0.4) * INDIRECT_COMPENSATION));
+    s.add(new THREE.AmbientLight(0x3d3230, legacyIntensity(0.22) * INDIRECT_COMPENSATION));
+    const keyL = new THREE.DirectionalLight(0xffe4c8, legacyIntensity(0.9));
+    keyL.position.set(-2.5, 6, -9);
+    keyL.target.position.set(0.3, 0, 0);
+    keyL.castShadow = true;
+    keyL.shadow.mapSize.set(2048, 2048);
+    const c = keyL.shadow.camera;
     c.left = -7;
     c.right = 7;
     c.top = 7;
     c.bottom = -7;
     c.near = 1;
     c.far = 25;
-    moonL.shadow.bias = -0.0008;
-    moonL.shadow.radius = 1;
-    s.add(moonL, moonL.target);
+    keyL.shadow.bias = -0.0008;
+    keyL.shadow.radius = 1;
+    s.add(keyL, keyL.target);
   }
 
   private bindInput() {
@@ -315,7 +318,6 @@ export class Engine {
     const pr = this.renderer.getPixelRatio();
     if (avg > 1 / 42 && pr > 1) {
       this.renderer.setPixelRatio(Math.max(1, pr - 0.5));
-      this.fx.materials.forEach((m) => (m.uniforms.pr.value = this.renderer.getPixelRatio()));
       this.resize();
     }
     p.n = 0;
@@ -327,6 +329,7 @@ export class Engine {
   private updateInteractive(dt: number) {
     const w = window.innerWidth,
       h = window.innerHeight;
+    const labels: Label[] = [];
     for (const it of this.kit.interactive) {
       const target = this.hovered === it ? 1 : 0;
       it.glow += (target - it.glow) * Math.min(1, dt * 8);
@@ -350,8 +353,88 @@ export class Engine {
         this.tmp.copy(it.anchor).project(this.camera);
         const vis = this.tmp.z < 1 && Math.abs(this.tmp.x) < 1.1 && Math.abs(this.tmp.y) < 1.1;
         el.style.display = vis ? "" : "none";
-        el.style.transform = `translate(${(this.tmp.x * 0.5 + 0.5) * w}px,${(-this.tmp.y * 0.5 + 0.5) * h}px) translate(-50%,-100%)`;
+        const x = (this.tmp.x * 0.5 + 0.5) * w,
+          y = (-this.tmp.y * 0.5 + 0.5) * h;
+        const size = this.sizes.get(el);
+        if (vis && size && size.w > 0) labels.push({ el, w: size.w, h: size.h, left: x - size.w / 2, top: y - size.h });
+        else el.style.transform = `translate(${x}px,${y}px) translate(-50%,-100%)`;
       }
+    }
+    this.layoutLabels(labels, w, dt);
+  }
+
+  /**
+   * Keep hotspot labels on screen and out of each other's (and Ren's bubble's) way.
+   * Labels start centred above their anchor; one that overlaps moves to the nearest free slot
+   * above, below or beside an obstacle. The anchor is followed exactly every frame; only the
+   * collision offset eases in and out (instantly under reduced motion), so labels glide rather than jump.
+   */
+  private layoutLabels(labels: Label[], w: number, dt: number) {
+    const edge = 8,
+      gap = 4;
+    const obstacles: Rect[] = [];
+    const b = this.bubble;
+    const bs = b && this.sizes.get(b);
+    if (b && bs && b.classList.contains("show") && !b.classList.contains("dock")) {
+      // #bubble is translate(-50%,-100%) from its left/top, plus a 6px tail below.
+      obstacles.push({
+        left: this.bubbleAt.x - bs.w / 2,
+        top: this.bubbleAt.y - bs.h,
+        w: bs.w,
+        h: bs.h + 6,
+      });
+    }
+    labels.sort((a, c) => a.top - c.top);
+    const ease = this.opts.reducedMotion ? 1 : Math.min(1, dt * 10);
+    // Narrow screens (same breakpoint as the CSS) are crowded: besides the slots next to obstacles,
+    // search a grid of offsets around the anchor so every label finds a free place and stays visible.
+    const narrow = w <= 900;
+    const h = window.innerHeight;
+    const minTop = Math.max(edge, parseFloat(document.documentElement.style.getPropertyValue("--bar-h")) || 0);
+    for (const l of labels) {
+      const clamp = (x: number) => Math.min(Math.max(x, edge), w - edge - l.w);
+      const baseLeft = clamp(l.left),
+        baseTop = l.top;
+      const clear = (left: number, top: number) =>
+        top >= minTop &&
+        top + l.h <= h - edge &&
+        !obstacles.some(
+          (r) =>
+            left < r.left + r.w + gap &&
+            r.left < left + l.w + gap &&
+            top < r.top + r.h + gap &&
+            r.top < top + l.h + gap,
+        );
+      let left = baseLeft,
+        top = baseTop;
+      if (!clear(left, top)) {
+        // Nearest free slot; stay put if there is none.
+        const slots: [number, number][] = [];
+        for (const r of obstacles) {
+          slots.push(
+            [baseLeft, r.top - l.h - gap - 1], // above
+            [baseLeft, r.top + r.h + gap + 1], // below
+            [clamp(r.left - l.w - gap - 1), baseTop], // left of
+            [clamp(r.left + r.w + gap + 1), baseTop], // right of
+          );
+        }
+        if (narrow) {
+          for (let ky = -6; ky <= 6; ky++)
+            for (let kx = -2; kx <= 2; kx++) slots.push([clamp(baseLeft + (kx * l.w) / 2), baseTop + ky * (l.h + gap)]);
+        }
+        let dist = Infinity;
+        for (const [cl, ct] of slots) {
+          const d = Math.hypot(cl - baseLeft, ct - baseTop);
+          if (d < dist && clear(cl, ct)) [left, top, dist] = [cl, ct, d];
+        }
+      }
+      obstacles.push({ left, top, w: l.w, h: l.h });
+      // Ease only the collision offset; the base position tracks the anchor exactly.
+      const off = this.labelOffset.get(l.el) ?? { x: 0, y: 0 };
+      off.x += (left - baseLeft - off.x) * ease;
+      off.y += (top - baseTop - off.y) * ease;
+      this.labelOffset.set(l.el, off);
+      l.el.style.transform = `translate(${baseLeft + off.x}px,${baseTop + off.y}px)`;
     }
   }
 
@@ -360,10 +443,15 @@ export class Engine {
     const b = this.bubble;
     if (!b || this.focused) return;
     this.tmp.set(1.05, 1.12 + this.ren.hopLift * 0.22, 0.95).project(this.camera);
-    b.style.left = (this.tmp.x * 0.5 + 0.5) * window.innerWidth + "px";
-    b.style.top = (-this.tmp.y * 0.5 + 0.5) * window.innerHeight + "px";
+    this.bubbleAt.x = (this.tmp.x * 0.5 + 0.5) * window.innerWidth;
+    this.bubbleAt.y = (-this.tmp.y * 0.5 + 0.5) * window.innerHeight;
+    b.style.left = this.bubbleAt.x + "px";
+    b.style.top = this.bubbleAt.y + "px";
   }
 }
+
+type Rect = { left: number; top: number; w: number; h: number };
+type Label = Rect & { el: HTMLElement };
 
 /** Dispose every geometry, material and texture reachable from the scene. */
 function disposeScene(scene: THREE.Scene) {

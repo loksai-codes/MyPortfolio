@@ -1,17 +1,49 @@
 /* Ported verbatim from reference/index.html — mobile + reduced motion */
-/* mobile */
-@media (max-width: 900px) {
+
+/* compact bar, 901–1365px: the full bar needs ~1366px. Drop the subtitle and the JA sub-labels,
+   tighten the nav, and never let the brand or tools wrap. 1440 and mobile are untouched. */
+@media (min-width: 901px) and (max-width: 1365px) {
   #bar {
-    padding: 16px 18px;
+    gap: var(--space-4);
+  }
+  .brand small,
+  nav#nav button span {
+    display: none;
+  }
+  .brand b {
+    white-space: nowrap;
   }
   nav#nav {
+    gap: 0;
+  }
+  nav#nav button {
+    padding: var(--space-2) var(--space-3);
+    letter-spacing: 0.16em;
+    white-space: nowrap;
+  }
+  nav#nav button:after {
+    left: var(--space-3);
+    right: var(--space-3);
+  }
+  .tools,
+  .lang,
+  .snd {
+    flex: none;
+    white-space: nowrap;
+  }
+}
+
+/* menu bar, ≤1199px: even compact, the one-line nav needs 1159px (EN), so below 1200 it folds into
+   the menu button instead of relying on exact pixel maths. The dropdown hangs under the measured bar. */
+@media (max-width: 1199px) {
+  nav#nav {
     position: fixed;
-    top: 68px;
-    right: 14px;
+    top: var(--bar-h);
+    right: var(--space-10);
     flex-direction: column;
-    background: rgba(12, 14, 34, 0.95);
-    border: 1px solid rgba(217, 180, 106, 0.3);
-    padding: 8px;
+    background: rgba(var(--night-rgb), 0.95);
+    border: 1px solid rgba(var(--gold-rgb), 0.3);
+    padding: var(--space-2);
     display: none;
     margin: 0;
   }
@@ -20,7 +52,10 @@
   }
   nav#nav button {
     text-align: left;
-    padding: 11px 16px;
+    padding: var(--space-3) var(--space-4);
+  }
+  nav#nav button span {
+    display: block; /* the dropdown has room for the JA / EN sub-label again */
   }
   #menuBtn {
     display: grid;
@@ -28,10 +63,45 @@
   }
   .tools {
     margin-left: auto;
-    gap: 10px;
+  }
+}
+
+/* mobile */
+@media (max-width: 900px) {
+  #bar {
+    padding: var(--space-4) var(--space-5);
+  }
+  nav#nav {
+    position: fixed;
+    top: 68px;
+    right: 14px;
+    flex-direction: column;
+    background: rgba(var(--night-rgb), 0.95);
+    border: 1px solid rgba(var(--gold-rgb), 0.3);
+    padding: var(--space-2);
+    display: none;
+    margin: 0;
+  }
+  nav#nav.open {
+    display: flex;
+  }
+  nav#nav button {
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+  }
+  #menuBtn {
+    display: grid;
+    place-items: center;
+  }
+  .tools {
+    margin-left: auto;
+    gap: var(--space-2);
   }
   .snd span.t {
     display: none;
+  }
+  .snd .ico {
+    display: block;
   }
   .brand small {
     display: none;
@@ -49,7 +119,7 @@
     display: none;
   }
   #panel .body {
-    padding: 30px 22px 50px;
+    padding: var(--space-8) var(--space-6) var(--space-12);
   }
   #close {
     top: 30px;
@@ -67,8 +137,15 @@
   .vert {
     display: none;
   }
+  .hs {
+    padding: var(--space-1); /* compact: ~31px tall, still above the 24px target minimum */
+    gap: var(--space-1);
+  }
   .hs .tag {
-    font-size: 11px;
+    font-size: var(--text-2xs);
+  }
+  .hs .tag-obj {
+    display: none; /* "Shelf · Side Quests" → "Side Quests" on narrow screens */
   }
   .intro-ui {
     left: 7vw;
@@ -78,7 +155,7 @@
     transform: none;
   }
   .intro-btns button {
-    padding: 14px 22px;
+    padding: var(--space-4) var(--space-6);
   }
   .intro-top > span:first-child {
     display: none;
@@ -90,6 +167,56 @@
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01s !important;
+    /* run once and rest on the final frame; infinite loops at 0.01s would flicker */
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01s !important;
+  }
+}
+
+/* touch: comfortable targets and a pressed state (hover styles only exist on hover devices) */
+@media (pointer: coarse) {
+  .snd,
+  .lang button,
+  #close,
+  #menuBtn,
+  .gtabs button {
+    min-height: var(--tap-min);
+  }
+  .snd,
+  #close,
+  #menuBtn {
+    min-width: var(--tap-min);
+    justify-content: center;
+  }
+}
+@media (hover: none) {
+  .btn:active,
+  #close:active,
+  .contact a.row:active,
+  .btn.ghost:active {
+    background: var(--ink);
+    color: var(--washi);
+  }
+  .btn:not(.ghost):active {
+    background: var(--shu);
+  }
+  .gtabs button:active {
+    background: var(--ink);
+    color: var(--gold2);
+    border-color: var(--ink);
+  }
+  nav#nav button:active {
+    opacity: 1;
+  }
+  .hs:active .tag {
+    color: var(--gold2);
+  }
+  .intro-btns button:active {
+    border-color: var(--gold2);
+    color: var(--gold2);
+  }
+  .intro-btns button.main:active {
+    background: var(--gold2);
+    color: var(--ink);
   }
 }

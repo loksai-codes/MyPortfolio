@@ -53,7 +53,7 @@ src/
 
 - **React never touches Three.js objects.** It calls the engine API (`focus`, `openDoors`, `petRen`, `setLanguage`, `dispose`) and listens to its events (`select`, `hover`, `renSay`, `sound`).
 - **Parity with the original r128 scene.** Colour management is off and the r128 point-light falloff is restored (one guarded shader-chunk edit). Light intensities are multiplied by π, and indirect light gets a measured ×1.06 (see `engine/core/legacyLights.ts`).
-- **Performance.** Instanced petals, trees and fences. The shadow map is static, the pixel ratio adapts, and rendering pauses while the tab is hidden. Shaders are precompiled with `compileAsync`, and `dispose()` frees every geometry, material and texture. Audio code loads on idle, and the AudioContext is only created inside a click.
+- **Performance.** A deliberately minimal studio backdrop (gradient cyclorama dome, one floor plane, a round plinth, two contact-shadow decals). The shadow map is static, the pixel ratio adapts, and rendering pauses while the tab is hidden. Shaders are precompiled with `compileAsync`, and `dispose()` frees every geometry, material and texture. Audio code loads on idle, and the AudioContext is only created inside a click.
 - **Accessibility and SEO.** Every panel is semantic HTML reachable from the nav by keyboard, and Esc closes things. With JavaScript off or no WebGL, a text version of every section (EN + JA) is shown, and it is always present in the HTML. `prefers-reduced-motion` skips the camera tweens and intro animations. Deep links such as `/#projects` open that panel after you enter.
 
 ## Visual-regression tooling

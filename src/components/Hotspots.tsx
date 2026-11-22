@@ -12,26 +12,34 @@ export function Hotspots() {
   const t = useT();
   return (
     <div id="hotspots" aria-hidden="true">
-      {sections.map((s) => (
-        <button
-          type="button"
-          tabIndex={-1}
-          key={s.key}
-          className="hs"
-          data-key={s.key}
-          style={{ display: "none" }}
-          ref={(el) => {
-            if (el) bridge.hotspots.set(s.key, el);
-            else bridge.hotspots.delete(s.key);
-          }}
-          onClick={() => openSection(s.key)}
-          onMouseEnter={() => bridge.engine?.setHovered(s.key)}
-          onMouseLeave={() => bridge.engine?.setHovered(null)}
-        >
-          <span className="tag">{t(s.tag)}</span>
-          <span className="dot" />
-        </button>
-      ))}
+      {sections.map((s) => {
+        // "Shelf · Side Quests": the object part is dropped on narrow screens (CSS) to save room.
+        const tag = t(s.tag);
+        const cut = tag.indexOf(" · ");
+        return (
+          <button
+            type="button"
+            tabIndex={-1}
+            key={s.key}
+            className="hs"
+            data-key={s.key}
+            style={{ display: "none" }}
+            ref={(el) => {
+              if (el) bridge.hotspots.set(s.key, el);
+              else bridge.hotspots.delete(s.key);
+            }}
+            onClick={() => openSection(s.key)}
+            onMouseEnter={() => bridge.engine?.setHovered(s.key)}
+            onMouseLeave={() => bridge.engine?.setHovered(null)}
+          >
+            <span className="tag">
+              {cut > 0 && <span className="tag-obj">{tag.slice(0, cut + 3)}</span>}
+              {cut > 0 ? tag.slice(cut + 3) : tag}
+            </span>
+            <span className="dot" />
+          </button>
+        );
+      })}
     </div>
   );
 }

@@ -1,59 +1,26 @@
 import * as THREE from "three";
-import { pointsFragment, pointsVertex } from "./points.glsl";
-import { skyFragment, skyVertex } from "./sky.glsl";
-import { waterFragment, waterVertex } from "./water.glsl";
+import { backdropFragment, backdropVertex } from "./backdrop.glsl";
 
-export const skyMaterial = (moonDir: THREE.Vector3) =>
+/**
+ * Studio backdrop dome. `horizonHex` is a display (sRGB) colour because the shader writes its output raw;
+ * set it to what the fogged floor actually renders as, so wall and floor meet seamlessly.
+ * `spotDir` points at the centre of the soft light pool on the wall.
+ */
+export const backdropMaterial = (spotDir: THREE.Vector3, horizonHex: number) =>
   new THREE.ShaderMaterial({
     side: THREE.BackSide,
     depthWrite: false,
     fog: false,
-    uniforms: { md: { value: moonDir } },
-    vertexShader: skyVertex,
-    fragmentShader: skyFragment,
+    uniforms: {
+      sd: { value: spotDir },
+      hz: {
+        value: new THREE.Vector3(
+          ((horizonHex >> 16) & 255) / 255,
+          ((horizonHex >> 8) & 255) / 255,
+          (horizonHex & 255) / 255,
+        ),
+      },
+    },
+    vertexShader: backdropVertex,
+    fragmentShader: backdropFragment,
   });
-
-export type WaterMaterial = THREE.ShaderMaterial & { uniforms: { t: { value: number } } };
-
-export const waterMaterial = (moon: THREE.Vector3, lights: [THREE.Vector3, THREE.Vector3, THREE.Vector3]) =>
-  new THREE.ShaderMaterial({
-    transparent: true,
-    fog: false,
-    uniforms: {
-      t: { value: 0 },
-      moon: { value: moon },
-      l1: { value: lights[0] },
-      l2: { value: lights[1] },
-      l3: { value: lights[2] },
-    },
-    vertexShader: waterVertex,
-    fragmentShader: waterFragment,
-  }) as WaterMaterial;
-
-export interface PointsOpts {
-  color: THREE.ColorRepresentation;
-  size: number;
-  amp: number;
-  speed: number;
-  bright: number;
-  pixelRatio: number;
-}
-export type PointsMaterial = THREE.ShaderMaterial & { uniforms: { t: { value: number }; pr: { value: number } } };
-
-export const pointsMaterial = (o: PointsOpts) =>
-  new THREE.ShaderMaterial({
-    uniforms: {
-      t: { value: 0 },
-      pr: { value: o.pixelRatio },
-      col: { value: new THREE.Color(o.color) },
-      sz: { value: o.size },
-      amp: { value: o.amp },
-      spd: { value: o.speed },
-      br: { value: o.bright },
-    },
-    vertexShader: pointsVertex,
-    fragmentShader: pointsFragment,
-    transparent: true,
-    depthWrite: false,
-    blending: THREE.AdditiveBlending,
-  }) as PointsMaterial;

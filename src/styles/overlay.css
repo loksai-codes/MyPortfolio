@@ -7,8 +7,8 @@
   right: 0;
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding: 22px 40px;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-10);
   z-index: 20;
   pointer-events: none;
   opacity: 0;
@@ -27,7 +27,7 @@ body.entered #bar {
 .brand {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: var(--space-3);
   text-decoration: none;
 }
 .hanko {
@@ -40,34 +40,34 @@ body.entered #bar {
   place-items: center;
   font-family: var(--serif);
   font-weight: 800;
-  font-size: 16px;
+  font-size: var(--text-lg);
   transform: rotate(-5deg);
   box-shadow: inset 0 0 0 2px rgba(255, 235, 215, 0.3);
 }
 .brand b {
   font-family: var(--disp);
   font-weight: 600;
-  font-size: 21px;
+  font-size: var(--text-2xl);
   letter-spacing: 0.06em;
   display: block;
   line-height: 1;
 }
 .brand small {
-  font-size: 10px;
+  font-size: var(--text-3xs);
   opacity: 0.6;
   letter-spacing: 0.38em;
   display: block;
-  margin-top: 4px;
+  margin-top: var(--space-1);
 }
 nav#nav {
   display: flex;
-  gap: 6px;
+  gap: var(--space-1);
   margin: 0 auto;
 }
 nav#nav button {
   position: relative;
-  padding: 8px 14px;
-  font-size: 12px;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-xs);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   opacity: 0.7;
@@ -76,10 +76,10 @@ nav#nav button {
 nav#nav button span {
   display: block;
   font-family: var(--serif);
-  font-size: 10px;
+  font-size: var(--text-3xs);
   letter-spacing: 0.3em;
-  opacity: 0.55;
-  margin-top: 3px;
+  opacity: 0.8;
+  margin-top: var(--space-1);
   text-transform: none;
 }
 nav#nav button:after {
@@ -94,31 +94,41 @@ nav#nav button:after {
   transform-origin: left;
   transition: transform 0.5s var(--ease);
 }
-nav#nav button:hover,
 nav#nav button.on {
   opacity: 1;
 }
-nav#nav button:hover:after,
+@media (hover: hover) {
+  nav#nav button:hover {
+    opacity: 1;
+  }
+}
 nav#nav button.on:after {
   transform: scaleX(1);
+}
+@media (hover: hover) {
+  nav#nav button:hover:after {
+    transform: scaleX(1);
+  }
 }
 .tools {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: var(--space-3);
 }
 .lang {
   display: flex;
   align-items: center;
-  gap: 2px;
-  font-size: 12px;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
   letter-spacing: 0.12em;
 }
 .lang button {
   white-space: nowrap;
-  padding: 6px 8px;
-  opacity: 0.5;
-  transition: 0.3s;
+  padding: var(--space-2) var(--space-2);
+  opacity: 0.6; /* off state: 6.1:1 on night, 4.6:1 as ink on the fallback paper */
+  transition:
+    opacity var(--dur),
+    color var(--dur);
   position: relative;
 }
 .lang button.on {
@@ -128,19 +138,24 @@ nav#nav button.on:after {
 .lang i {
   width: 1px;
   height: 12px;
-  background: rgba(242, 232, 213, 0.35);
+  background: rgba(var(--washi-rgb), 0.35);
 }
 .snd {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 11px;
+  gap: var(--space-2);
+  font-size: var(--text-2xs);
   letter-spacing: 0.3em;
   opacity: 0.8;
 }
+.snd .ico {
+  display: none;
+  width: 16px;
+  height: 16px;
+}
 .snd .bars {
   display: flex;
-  gap: 3px;
+  gap: var(--space-1);
   align-items: center;
   height: 16px;
 }
@@ -177,10 +192,11 @@ nav#nav button.on:after {
 }
 #menuBtn {
   display: none;
+  place-items: center;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 1px solid rgba(242, 232, 213, 0.25);
+  border: 1px solid rgba(var(--washi-rgb), 0.25);
 }
 
 /* hero */
@@ -208,10 +224,10 @@ body.entered #hero.hide {
   transition-delay: 0s;
 }
 #hero .kicker {
-  font-size: 11px;
+  font-size: var(--text-2xs);
   letter-spacing: 0.5em;
   color: var(--sakura);
-  margin-bottom: 14px;
+  margin-bottom: var(--space-3);
 }
 #hero h1 {
   font-family: var(--disp);
@@ -227,36 +243,36 @@ body.entered #hero.hide {
   font-size: 0.24em;
   letter-spacing: 0.7em;
   opacity: 0.8;
-  margin-top: 14px;
+  margin-top: var(--space-3);
   font-weight: 500;
 }
 #hero .line {
   width: 220px;
   height: 1px;
-  margin: 22px 0 16px;
+  margin: var(--space-5) 0 var(--space-4);
   background: linear-gradient(90deg, var(--gold), transparent);
 }
 #hero .roles {
-  font-size: 12px;
+  font-size: var(--text-xs);
   letter-spacing: 0.38em;
   opacity: 0.85;
 }
 #hero .roles i {
   color: var(--gold);
   font-style: normal;
-  margin: 0 8px;
+  margin: 0 var(--space-2);
 }
 #hint {
   position: fixed;
   right: 40px;
   bottom: 44px;
   z-index: 10;
-  font-size: 11px;
+  font-size: var(--text-2xs);
   letter-spacing: 0.32em;
   opacity: 0;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
   transition: opacity 1s;
   pointer-events: none;
 }
@@ -299,7 +315,7 @@ body.entered #hint {
   transform: translateY(-50%);
   writing-mode: vertical-rl;
   font-family: var(--serif);
-  font-size: 13px;
+  font-size: var(--text-sm);
   letter-spacing: 0.8em;
   opacity: 0;
   z-index: 5;
@@ -330,9 +346,9 @@ body.entered #hotspots {
   pointer-events: auto;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2);
   transition: opacity 0.4s;
-  padding: 6px;
+  padding: var(--space-2);
 }
 .hs .dot {
   width: 9px;
@@ -340,15 +356,15 @@ body.entered #hotspots {
   transform: rotate(45deg);
   background: var(--gold2);
   box-shadow:
-    0 0 0 4px rgba(243, 220, 156, 0.14),
-    0 0 16px rgba(243, 220, 156, 0.9);
+    0 0 0 4px rgba(var(--gold2-rgb), 0.14),
+    0 0 16px rgba(var(--gold2-rgb), 0.9);
   flex: none;
 }
 .hs .dot:after {
   content: "";
   position: absolute;
   inset: -7px;
-  border: 1px solid rgba(243, 220, 156, 0.45);
+  border: 1px solid rgba(var(--gold2-rgb), 0.45);
   animation: ring 2.6s ease-out infinite;
 }
 @keyframes ring {
@@ -366,14 +382,16 @@ body.entered #hotspots {
 }
 .hs .tag {
   font-family: var(--serif);
-  font-size: 13px;
+  font-size: var(--text-sm);
   letter-spacing: 0.12em;
   white-space: nowrap;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
-  opacity: 0.85;
-  transition: 0.35s;
+  text-shadow: var(--label-halo);
+  /* night backing: ≥4.9:1 even over white shoji glare; the gold underline below becomes its edge */
+  background: var(--label-backing);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  transition: color var(--dur);
   position: relative;
-  padding-bottom: 3px;
 }
 .hs .tag:after {
   content: "";
@@ -387,14 +405,22 @@ body.entered #hotspots {
   transform-origin: left;
   transition: transform 0.45s var(--ease);
 }
-.hs:hover .tag,
-.hs.hover .tag {
-  opacity: 1;
-  color: var(--gold2);
+@media (hover: hover) {
+  /* .hover is set by the engine when the 3D object is hovered; :hover only on devices that hover */
+  .hs.hover .tag {
+    color: var(--gold2);
+  }
 }
-.hs:hover .tag:after,
 .hs.hover .tag:after {
   transform: scaleX(1);
+}
+@media (hover: hover) {
+  .hs:hover .tag {
+    color: var(--gold2);
+  }
+  .hs:hover .tag:after {
+    transform: scaleX(1);
+  }
 }
 body.panel-open .hs {
   opacity: 0;
@@ -413,11 +439,11 @@ body.panel-open .hs {
   transition:
     opacity 0.4s,
     transform 0.4s var(--ease);
-  background: rgba(244, 236, 220, 0.96);
+  background: var(--bubble-bg);
   color: var(--ink);
   font-family: var(--serif);
-  font-size: 14px;
-  padding: 10px 16px;
+  font-size: var(--text-md);
+  padding: var(--space-3) var(--space-4);
   border-radius: 2px;
   max-width: 250px;
   text-align: center;
@@ -431,7 +457,7 @@ body.panel-open .hs {
   bottom: -6px;
   margin-left: -6px;
   border: 6px solid transparent;
-  border-top-color: rgba(244, 236, 220, 0.96);
+  border-top-color: var(--bubble-bg);
   border-bottom: 0;
 }
 #bubble.show {
@@ -445,7 +471,7 @@ body.panel-open .hs {
   transform: none !important;
   text-align: left;
   max-width: min(380px, 40vw);
-  padding-left: 58px;
+  padding-left: 58px; /* geometry, not spacing: badge inset 12 + badge 34 + 12 */
 }
 #bubble.dock:before {
   content: attr(data-badge);
@@ -456,12 +482,12 @@ body.panel-open .hs {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #a58bd8;
+  background: var(--ren);
   color: #fff;
-  font-size: 10px;
+  font-size: var(--text-3xs);
   display: grid;
   place-items: center;
-  box-shadow: 0 0 0 2px #f3dc9c;
+  box-shadow: 0 0 0 2px var(--gold2);
 }
 #bubble.dock:after {
   display: none;
